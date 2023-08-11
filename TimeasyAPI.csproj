@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -24,17 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\DTOs\" />
     <Folder Include="src\Data\Mappings\" />
     <Folder Include="src\Facades\Interfaces\" />
-    <Folder Include="src\Models\Institute\" />
-    <Folder Include="src\Models\Course\" />
-    <Folder Include="src\Models\RoomType\" />
-    <Folder Include="src\Models\ValueObjects\" />
-    <Folder Include="src\Models\Subjects\" />
-    <Folder Include="src\Models\Room\" />
-    <Folder Include="src\Models\Teacher\" />
     <Folder Include="src\Repositories\Interfaces\" />
-    <Folder Include="src\Services\Interfaces\" />
   </ItemGroup>
 
 </Project>
