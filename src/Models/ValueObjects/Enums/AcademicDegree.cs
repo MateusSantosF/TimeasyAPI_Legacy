@@ -1,6 +1,6 @@
 ﻿namespace TimeasyAPI.src.Models.ValueObjects.Enums
 {
-    public enum AcademicDegree
+    public enum AcademicDegree: uint
     {
         Technical,
         Bachelor,

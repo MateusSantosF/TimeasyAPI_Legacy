@@ -1,6 +1,6 @@
 ﻿namespace TimeasyAPI.src.Models.ValueObjects.Enums
 {
-    public enum FPAStatus
+    public enum FPAStatus : uint
     {
         COMPLETED,
         WAITING,

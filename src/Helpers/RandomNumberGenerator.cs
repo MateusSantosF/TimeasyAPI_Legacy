@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TimeasyAPI.src.Helpers
+﻿namespace TimeasyAPI.src.Helpers
 {
     public static class RandomNumberGenerator
     {

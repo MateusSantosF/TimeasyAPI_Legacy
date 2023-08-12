@@ -14,8 +14,9 @@ namespace TimeasyAPI.src.Models
 
         [Required(ErrorMessage = "OperationalSystem is required.")]
         public OperationalSystem OperationalSystem { get; set; }
-        
+
         // EF Relations
+        public ICollection<Subject> Subjects { get; set; }
 
         public ICollection<Room> Rooms { get; set;}
     }

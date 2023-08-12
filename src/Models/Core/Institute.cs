@@ -23,7 +23,7 @@ namespace TimeasyAPI.src.Models
 
         // EF Relations
         public ICollection<Course> Courses { get; set; }
-        public ICollection<Timetable> Timetable { get; set; }
+        public ICollection<Timetable> Timetables { get; set; }
         public ICollection<Teacher> Teachers { get; set; }
         public ICollection<User> Users { get; set; }
     }

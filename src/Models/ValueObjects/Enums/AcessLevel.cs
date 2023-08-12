@@ -1,6 +1,6 @@
 ﻿namespace TimeasyAPI.src.Models.ValueObjects.Enums
 {
-    public enum AcessLevel
+    public enum AcessLevel: uint
     {
         Administrator,
         Coordinator

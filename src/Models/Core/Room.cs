@@ -20,5 +20,6 @@ namespace TimeasyAPI.src.Models
 
         // EF Relations
         public ICollection<Timetable> Timetables { get; set; } 
+        public Guid RoomTypeId { get; set; }
     }
 }

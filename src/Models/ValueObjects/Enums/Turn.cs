@@ -1,7 +1,10 @@
 ﻿namespace TimeasyAPI.src.Models.ValueObjects.Enums
 {
-    public enum Turn
+    public enum Turn: uint
     {
-
+        Morning,
+        Afternoon,
+        Evening,
+        FullDay
     }
 }

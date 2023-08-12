@@ -25,7 +25,7 @@ namespace TimeasyAPI.src.Models
 
         //EF Relations
         public ICollection<CourseSubject> CourseSubject { get; set; }
-        public ICollection<TimetableSubject> TimetableSubjects { get; set; }
+        public ICollection<TimetableSubjects> TimetableSubjects { get; set; }
 
         public Guid RoomTypeId { get; set; }
     }

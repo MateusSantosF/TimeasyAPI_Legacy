@@ -1,6 +1,10 @@
 ﻿namespace TimeasyAPI.src.Models.ValueObjects.Enums
 {
-    public enum PeriodType
+    public enum PeriodType: uint
     {
+        Quarter,
+        Trimester,
+        Semester,
+        Annual
     }
 }
