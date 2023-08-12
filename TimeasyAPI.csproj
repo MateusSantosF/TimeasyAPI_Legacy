@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Controllers\DTOs\" />
     <Folder Include="src\Facades\Interfaces\" />
-    <Folder Include="src\Repositories\Interfaces\" />
   </ItemGroup>
 
 </Project>
