@@ -3,7 +3,7 @@ using TimeasyAPI.src.Models.ValueObjects.Enums;
 
 namespace TimeasyAPI.src.Models
 {
-    public class FPA
+    public class FPA:BaseEntity
     {
         public FPA()
         {

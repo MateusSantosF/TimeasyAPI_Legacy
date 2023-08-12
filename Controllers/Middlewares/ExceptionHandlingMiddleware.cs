@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using TimeasyAPI.Controllers.Middlewares.Models;
-using Serilog;
+
 
 namespace TimeasyAPI.Controllers.Middlewares
 {

@@ -5,7 +5,7 @@
         private static Random random = new Random();
         public static string GenerateRandomNumber(int length)
         {
-            const string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             char[] result = new char[length];
 
             for (int i = 0; i < length; i++)

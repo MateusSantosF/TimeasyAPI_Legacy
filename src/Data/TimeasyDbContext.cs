@@ -10,6 +10,7 @@ namespace TimeasyAPI.src.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(TimeasyDbContext).Assembly);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

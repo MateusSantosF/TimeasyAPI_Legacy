@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
 using System.Text;
 using TimeasyAPI.Controllers.Middlewares;
+using TimeasyAPI.src.Data;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Models.UI;
 
@@ -40,11 +42,11 @@ builder.Services.AddAuthentication(x =>
 
 // Configure Database Connection
 
-//var connection = builder.Configuration.GetConnectionString(nameof(TimeasyDbContext));
+var connection = builder.Configuration.GetConnectionString(nameof(TimeasyDbContext));
 
-//builder.Services.AddDbContext<TimeasyDbContext>(options =>
-//    options.UseMySql(connection, ServerVersion.AutoDetect(connection))
-//);
+builder.Services.AddDbContext<TimeasyDbContext>(options =>
+    options.UseMySql(connection, ServerVersion.AutoDetect(connection))
+);
 
 // Configure Serilog
 builder.Host.UseSerilog((ctx, lc) => lc
