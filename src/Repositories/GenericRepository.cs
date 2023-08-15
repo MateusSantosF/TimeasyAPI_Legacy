@@ -1,43 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.Data;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Repositories.Interfaces;
-using TimeasyAPI.src.UnitOfWork;
 
 namespace TimeasyAPI.src.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T>, IDisposable where T : BaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private DbSet<T> _entitie;
-        private bool _isDisposed;
         private readonly Serilog.ILogger _logger;
-
-        public GenericRepository(Serilog.ILogger logger, IUnitOfWork<TimeasyDbContext> unitOfWork): this(logger,unitOfWork.Context)
-        {
-            _logger = logger;
-        }
 
         public GenericRepository(Serilog.ILogger logger, TimeasyDbContext context) { 
             
             _logger = logger;
             DbContext = context;
-            _isDisposed = false;
+            _entitie = context.Set<T>();
         }
 
         public TimeasyDbContext DbContext { get; set; }
-        protected virtual DbSet<T> Entitie
-        {
-            get { return _entitie ??= DbContext.Set<T>(); }
-        }
-
-        public async Task<T> Create(T entity)
+        
+     
+        public async Task<T> CreateAsync(T entity)
         {
             try
             {
-                await Entitie.AddAsync(entity);
+                await _entitie.AddAsync(entity);
                 return entity;
             }
             catch (OperationCanceledException dbEx)
@@ -47,33 +38,32 @@ namespace TimeasyAPI.src.Repositories
             }
         }
 
-        public Task Delete(T entity)
+        public Task DeleteAsync(T entity)
         {
-            Entitie.Remove(entity); 
+            _entitie.Remove(entity); 
             return Task.CompletedTask;
         }
 
-        public async Task<PagedResult<T>> GetAll(int page, int pageSize)
+        public async Task<PagedResult<T>> GetAllAsync(int page, int pageSize)
         {
-            return await Entitie.GetPagedAsync<T>(page, pageSize);
+            return await _entitie.GetPagedAsync(page, pageSize);
         }
 
-        public async Task<T> GetById(Guid id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
-            return await Entitie.Where(entitie => entitie.Id.Equals(id)).FirstOrDefaultAsync();
+            return await _entitie.Where(entitie => entitie.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public Task Update(T entity)
+        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            DbContext.Entry(entity).State = EntityState.Modified;
+            return await _entitie.Where(predicate).FirstOrDefaultAsync();
+        }
+
+        public Task UpdateAsync(T entity)
+        {
+            DbContext.Update(entity);
             return Task.CompletedTask;
         }
 
-        public void Dispose()
-        {
-            if (DbContext != null)
-                DbContext.Dispose();
-            _isDisposed = true;
-        }
     }
 }

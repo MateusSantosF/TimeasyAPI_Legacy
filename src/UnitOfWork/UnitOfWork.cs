@@ -1,61 +1,45 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using TimeasyAPI.src.UnitOfWork;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System.Threading;
+using TimeasyAPI.src.Data;
 
 namespace TimeasyAPI.src.UnitOfWork
 {
-    public class UnitOfWork<TContext> : IUnitOfWork<TContext>, IDisposable where TContext : DbContext, new()
+    public class UnitOfWork : IUnitOfWork
     {
-        private bool _disposed;
-        private IDbContextTransaction _objTran;
+        private readonly TimeasyDbContext _dbContext;
+        private  IDbContextTransaction? _transactionObj;
 
-        public TContext Context { get; }
-
-        public UnitOfWork()
-        {
-            Context = new TContext();
+        public UnitOfWork(TimeasyDbContext context) {
+            _dbContext = context;
         }
-
+      
         public void CreateTransaction()
         {
-            _objTran = Context.Database.BeginTransaction();
+            _transactionObj =  _dbContext.Database.BeginTransaction();
         }
-
         public void Commit()
         {
-            _objTran.Commit();
+            _transactionObj?.Commit();
+        }
+
+        public void SaveChanges()
+        {
+            _dbContext.SaveChanges();
         }
 
         public void Rollback()
         {
-            _objTran.Rollback();
-            _objTran.Dispose();
-        }
-
-        public void Save()
-        {
             try
             {
-                //Calling DbContext Class SaveChanges method 
-                Context.SaveChanges();
+                _transactionObj?.RollbackAsync();
+
             }
-            catch (DbUpdateException dbEx)
+            catch (Exception)
             {
 
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-                if (disposing)
-                    Context.Dispose();
-            _disposed = true;
-        }
+      
     }
 }

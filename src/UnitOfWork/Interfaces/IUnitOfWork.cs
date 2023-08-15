@@ -2,12 +2,11 @@
 
 namespace TimeasyAPI.src.UnitOfWork
 {
-    public interface IUnitOfWork<out TContext> where TContext : DbContext, new()
+    public interface IUnitOfWork 
     {
-        TContext Context { get; }
         void CreateTransaction();
         void Commit();
         void Rollback();
-        void Save();
+        void SaveChanges();
     }
 }

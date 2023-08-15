@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="src\DTOs\Institute\Request\" />
     <Folder Include="src\Facades\" />
-    <Folder Include="src\Mappings\" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.Controllers.Middlewares.Models;
 
 
@@ -40,8 +41,12 @@ namespace TimeasyAPI.Controllers.Middlewares
             };
             switch (exception)
             {
-                case ApplicationException ex:
+                case AppException ex:
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    errorResponse.Message = ex.Message;
+                    break;
+                case DatabaseException ex:
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     errorResponse.Message = ex.Message;
                     break;
                 default:

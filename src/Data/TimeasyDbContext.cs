@@ -8,7 +8,7 @@ namespace TimeasyAPI.src.Data
         {
         }
 
-        public TimeasyDbContext() { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(TimeasyDbContext).Assembly);
