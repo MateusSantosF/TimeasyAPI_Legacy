@@ -3,6 +3,7 @@ using TimeasyAPI.src.DTOs.User;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.Core;
+using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
@@ -39,6 +40,8 @@ namespace TimeasyAPI.src.Services
                 }
     
                 var createUserRequest = request.MapToEntity();
+                createUserRequest.AcessLevel = AcessLevel.Administrator;
+
                 _unitOfWork.CreateTransaction();
                 await _userRepository.CreateAsync(createUserRequest);
                 await _instituteRepository.CreateAsync(createUserRequest.Institute);

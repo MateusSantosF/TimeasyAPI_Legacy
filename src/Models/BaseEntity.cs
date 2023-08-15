@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TimeasyAPI.src.Models
 {
@@ -9,9 +7,7 @@ namespace TimeasyAPI.src.Models
         [Key]
         public Guid Id { get; set; }
 
-        [DefaultValue(true)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public bool Active { get; set; }    
+        public bool Active { get; set; } = true;    
         
         protected BaseEntity()
         {
