@@ -26,8 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\DTOs\" />
-    <Folder Include="src\Facades\Interfaces\" />
+    <Folder Include="src\DTOs\Institute\Request\" />
+    <Folder Include="src\Facades\" />
+    <Folder Include="src\Mappings\" />
   </ItemGroup>
 
 </Project>

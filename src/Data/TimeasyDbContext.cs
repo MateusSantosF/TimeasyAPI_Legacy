@@ -7,6 +7,8 @@ namespace TimeasyAPI.src.Data
         public TimeasyDbContext(DbContextOptions<TimeasyDbContext> options): base (options)
         {
         }
+
+        public TimeasyDbContext() { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(TimeasyDbContext).Assembly);

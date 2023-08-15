@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TimeasyAPI.src.DTOs.User;
 using TimeasyAPI.src.Models.Core;
 using TimeasyAPI.src.Services.Interfaces;
 
@@ -29,6 +30,13 @@ namespace TimeasyAPI.Controllers
                 user,
                 token
             }).Result;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
+        {
+            return Ok();
         }
 
     }

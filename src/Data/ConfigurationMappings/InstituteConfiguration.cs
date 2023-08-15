@@ -17,6 +17,7 @@ namespace TimeasyAPI.src.Data.Mappings
             builder
                .HasMany(i => i.Users)
                .WithOne(u => u.Institute)
+               .IsRequired()
                .HasForeignKey(c => c.InstituteId);
 
             builder
