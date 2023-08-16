@@ -5,14 +5,9 @@ namespace TimeasyAPI.src.Models
 {
     public class Institute : BaseEntity
     {
-        [Required(ErrorMessage = "Name is required.")]
-        [MaxLength(100, ErrorMessage = "Name must be at most 100 characters.")]
-        public string Name { get; set; }
 
-        [RegularExpression("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "OpenHour must be in HH:mm format.")]
+        public string Name { get; set; }   
         public string OpenHour { get; set; }
-
-        [RegularExpression("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "CloseHour must be in HH:mm format.")]
         public string CloseHour { get; set; }
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }

@@ -1,5 +1,7 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.User;
+using TimeasyAPI.src.DTOs.User.Requests;
+using TimeasyAPI.src.DTOs.User.Responses;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.Core;
@@ -15,12 +17,14 @@ namespace TimeasyAPI.src.Services
         private IUnitOfWork _unitOfWork;
         private IGenericRepository<User> _userRepository;
         private IGenericRepository<Institute> _instituteRepository;
+        private ITokenService _tokenService;
         private Serilog.ILogger _logger;
-        public UserServices(IGenericRepository<User> userRepository, IGenericRepository<Institute> instituteRepository,
+        public UserServices(IGenericRepository<User> userRepository, ITokenService tokenService, IGenericRepository<Institute> instituteRepository,
                             IUnitOfWork unitOfWork, Serilog.ILogger logger)
         {
             _userRepository = userRepository;
             _instituteRepository = instituteRepository;
+            _tokenService = tokenService;
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
@@ -36,7 +40,7 @@ namespace TimeasyAPI.src.Services
             {
                 if (await UserWithEmailExists(request.Email))
                 {
-                    throw new AppException("Email já está sendo utilizado.");
+                    throw new AppException("Email informado já está sendo utilizado.");
                 }
     
                 var createUserRequest = request.MapToEntity();
@@ -53,7 +57,7 @@ namespace TimeasyAPI.src.Services
             }
             catch (AppException)
             {
-                _logger.Error($"Erro ao criar usuário root. Email em uso.");
+                _logger.Error($"Erro ao criar usuário root. Email em uso ${request.Email}.");
                 throw;
             }
             catch(Exception e)
@@ -64,7 +68,27 @@ namespace TimeasyAPI.src.Services
             }
         }
 
-        private async Task<bool>  UserWithEmailExists(string email)
+        public async Task<AuthResponse> AuthAsync(AuthRequest request)
+        {
+            var user = await _userRepository.FindAsync(user => user.Email.Equals(request.Email));
+
+            if (user is null)
+            {
+                throw new AppException("Usuário não encontrado.");
+            }
+
+            if (!user.Password.Equals(request.Password))
+            {
+                throw new AppException("Senha inválida.");
+            }
+
+            AuthResponse response = user.EntitityToMap();
+            response.Token = _tokenService.GenerateToken(user);
+
+            return response;
+        }
+
+        private async Task<bool> UserWithEmailExists(string email)
         {
             var existingUser = await _userRepository.FindAsync(user => user.Email.Equals(email));
             return existingUser != null;

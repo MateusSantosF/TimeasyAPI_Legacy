@@ -1,4 +1,5 @@
 ﻿using TimeasyAPI.src.DTOs.User;
+using TimeasyAPI.src.DTOs.User.Responses;
 using TimeasyAPI.src.Models.Core;
 
 namespace TimeasyAPI.src.Mappings
@@ -52,6 +53,16 @@ namespace TimeasyAPI.src.Mappings
                 Thursday = user.Institute.Thursday,
                 Friday = user.Institute.Friday,
                 Saturday = user.Institute.Saturday
+            };
+        }
+
+        public static AuthResponse EntitityToMap(this User user)
+        {
+            return new AuthResponse
+            {
+                Id = user.Id.ToString(),
+                Email = user.Email,
+                AcessLevel = (uint)user.AcessLevel
             };
         }
     }

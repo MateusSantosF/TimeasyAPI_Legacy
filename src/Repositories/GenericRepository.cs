@@ -34,7 +34,7 @@ namespace TimeasyAPI.src.Repositories
             catch (OperationCanceledException dbEx)
             {
                 _logger.Error(dbEx.Message);
-                throw new AppException("Erro ao criar entidade");
+                throw new DatabaseException("Erro ao criar entidade");
             }
         }
 
@@ -56,7 +56,7 @@ namespace TimeasyAPI.src.Repositories
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _entitie.Where(predicate).FirstOrDefaultAsync();
+            return await _entitie.AsNoTracking().Where(predicate).FirstOrDefaultAsync();
         }
 
         public Task UpdateAsync(T entity)

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.User;
+using TimeasyAPI.src.DTOs.User.Requests;
 using TimeasyAPI.src.Models.Core;
 using TimeasyAPI.src.Services.Interfaces;
 
@@ -22,18 +24,19 @@ namespace TimeasyAPI.Controllers
         }
 
 
-        [HttpGet("auth")]
+        [HttpPost("auth")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Auth()
+        public async Task<ActionResult<dynamic>> Auth(AuthRequest request)
         {
-            var user = new User() { AcessLevel = 0, FullName = "Mateus Santos"};
-            var token = _tokenService.GenerateToken(user);
-
-            return Task.FromResult(new
+            if (!ModelState.IsValid)
             {
-                user,
-                token
-            }).Result;
+                throw new AppException(GetModelErrors());
+            }
+
+            return Ok(await _userService.AuthAsync(request));
         }
 
         [HttpPost("create")]
@@ -43,14 +46,20 @@ namespace TimeasyAPI.Controllers
 
             if (!ModelState.IsValid)
             {
-                var validationErrors = ModelState.Values.SelectMany(v => v.Errors)
-                                             .Select(e => e.ErrorMessage)
-                                             .ToList();
-
-                throw new AppException(string.Join(" ", validationErrors));
+                throw new AppException(GetModelErrors());
             }
-            var result = await _userService.CreateRootUserAsync(request);
-            return Ok(result);
+    
+            return Ok(await _userService.CreateRootUserAsync(request));
+        }
+
+        private string GetModelErrors()
+        {
+            var validationErrors = ModelState.Values
+                                            .SelectMany(v => v.Errors)
+                                            .Select(e => e.ErrorMessage)
+                                            .ToList();
+
+            return string.Join(" ", validationErrors);
         }
 
     }
