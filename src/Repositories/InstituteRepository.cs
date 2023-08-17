@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeasyAPI.src.Data;
-using TimeasyAPI.src.DTOs.Institute;
 using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Repositories.Interfaces;
 
@@ -19,9 +18,22 @@ namespace TimeasyAPI.src.Repositories
             _entitie = context.Set<Institute>();
 
         }
-        public async Task<Institute> GetByIdWithIntervalsAsync(Guid id)
+        public async Task<Institute?> GetByIdWithIntervalsAsync(Guid id)
         {
-            return await _entitie.Include(i => i.Intervals).Where(i => i.Id.Equals(id)).FirstOrDefaultAsync();
+            return await _entitie.Select(a => new Institute
+            {
+                Id = id,
+                Name = a.Name,
+                OpenHour = a.OpenHour,
+                CloseHour = a.CloseHour,
+                Monday = a.Monday,
+                Tuesday = a.Tuesday,
+                Wednesday = a.Wednesday,
+                Thursday = a.Thursday,
+                Friday = a.Friday,
+                Saturday = a.Saturday,
+                Intervals = a.Intervals.Where( i => i.Active == true ).ToList()
+            }).FirstOrDefaultAsync();
         }
     }
 }

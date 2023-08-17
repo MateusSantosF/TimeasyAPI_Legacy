@@ -75,9 +75,10 @@ namespace TimeasyAPI.src.Services
                 {
                     throw new AppException("Não foi encontrado nenhum intervalo com o Id informado.");
                 }
+                interval.Active = false;
 
                 _unitOfWork.CreateTransaction();
-                 _intervalRepository.Delete(interval);
+                 _intervalRepository.Update(interval);
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
             }
