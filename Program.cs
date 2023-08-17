@@ -24,7 +24,8 @@ builder.Services.AddSwaggerGen(c =>
     {
         In = ParameterLocation.Header,
         Description = "Please enter into field the word 'Bearer' following by space and JWT",
-        Scheme = "Bearer"
+        Scheme = "Bearer",
+        Name = "Authorization",
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -101,8 +102,9 @@ app.UseCors(x =>
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
 
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

@@ -4,7 +4,7 @@ using System.Net;
 using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.User;
 using TimeasyAPI.src.DTOs.User.Requests;
-using TimeasyAPI.src.Models.Core;
+using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Services.Interfaces;
 
 namespace TimeasyAPI.Controllers
@@ -12,14 +12,11 @@ namespace TimeasyAPI.Controllers
     [Route("api/[controller]")]
     public class UserController: ControllerBase
     {   
-        private readonly ILogger<UserController> _logger;
-        private readonly ITokenService _tokenService;
+
         private readonly IUserServices _userService;
 
-        public UserController(ILogger<UserController> logger, ITokenService tokenService, IUserServices userService = null)
+        public UserController(  IUserServices userService)
         {
-            _logger = logger;
-            _tokenService = tokenService;
             _userService = userService;
         }
 
