@@ -28,7 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\DTOs\Institute\Request\" />
+    <Folder Include="src\DTOs\NovaPasta\" />
+    <Folder Include="src\DTOs\Room\Response\" />
     <Folder Include="src\Facades\" />
   </ItemGroup>
 

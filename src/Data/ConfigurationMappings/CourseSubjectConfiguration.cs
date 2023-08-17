@@ -9,7 +9,7 @@ namespace TimeasyAPI.src.Data.Mappings
         public void Configure(EntityTypeBuilder<CourseSubject> builder)
         {
             builder.HasKey(cs => new { cs.CourseId, cs.SubjectId });
-
+  
             builder
                 .HasOne(s => s.Subject)
                 .WithMany(tc => tc.CourseSubject)

@@ -12,6 +12,8 @@ namespace TimeasyAPI.src.Data.Mappings
                 .HasOne(s => s.RoomTypeNeeded)
                 .WithMany(rt => rt.Subjects)
                 .HasForeignKey(s => s.RoomTypeId);
+
+            builder.HasIndex(s => s.Name).IsUnique();
         }
     }
 }

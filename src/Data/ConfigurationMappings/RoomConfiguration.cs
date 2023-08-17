@@ -13,6 +13,8 @@ namespace TimeasyAPI.src.Data.Mappings
                 .WithMany(t => t.Rooms)
                 .HasForeignKey( r=> r.RoomTypeId);
 
+            builder.HasIndex(room => room.Name).IsUnique();
+
             builder
                 .HasMany(r => r.Timetables)
                 .WithMany(t => t.Rooms);

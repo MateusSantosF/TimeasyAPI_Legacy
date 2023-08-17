@@ -4,7 +4,6 @@ using System.Net;
 using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.User;
 using TimeasyAPI.src.DTOs.User.Requests;
-using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Services.Interfaces;
 
 namespace TimeasyAPI.Controllers
@@ -26,7 +25,7 @@ namespace TimeasyAPI.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Auth(AuthRequest request)
+        public async Task<IActionResult> Auth(AuthRequest request)
         {
             if (!ModelState.IsValid)
             {

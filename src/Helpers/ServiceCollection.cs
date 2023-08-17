@@ -13,6 +13,10 @@ namespace TimeasyAPI.src.Helpers
             serviceCollection.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             serviceCollection.AddScoped<IUnitOfWork,UnitOfWork.UnitOfWork>();
             serviceCollection.AddScoped<IUserServices, UserServices>();
+            serviceCollection.AddScoped<IRoomRepository, RoomRepository>();
+            serviceCollection.AddScoped<IRoomServices, RoomServices>();
+            serviceCollection.AddScoped<IRoomTypeServices, RoomTypeServices>();
+            serviceCollection.AddScoped<IInstituteServices, InstituteServices>();
         }
     }
 }
