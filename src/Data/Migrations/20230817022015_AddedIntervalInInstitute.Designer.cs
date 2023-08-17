@@ -11,8 +11,8 @@ using TimeasyAPI.src.Data;
 namespace TimeasyAPI.Migrations
 {
     [DbContext(typeof(TimeasyDbContext))]
-    [Migration("20230815200515_UpdatedBaseEntity")]
-    partial class UpdatedBaseEntity
+    [Migration("20230817022015_AddedIntervalInInstitute")]
+    partial class AddedIntervalInInstitute
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,18 +62,15 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("int unsigned");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<Guid>("InstituteId")
                         .HasColumnType("char(36)");
@@ -96,7 +93,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<Guid>("InstituteId")
@@ -130,7 +126,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Code")
@@ -162,7 +157,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("CloseHour")
@@ -177,8 +171,7 @@ namespace TimeasyAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("OpenHour")
                         .IsRequired()
@@ -208,18 +201,22 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("End")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<Guid>("InstituteId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Start")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InstituteId");
 
                     b.ToTable("Interval");
                 });
@@ -231,7 +228,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Block")
@@ -252,6 +248,9 @@ namespace TimeasyAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.HasIndex("RoomTypeId");
 
                     b.ToTable("Room");
@@ -264,7 +263,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsComputerLab")
@@ -295,7 +293,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("varchar(10)");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<uint>("Complexity")
@@ -316,6 +313,9 @@ namespace TimeasyAPI.Migrations
 
                     b.HasIndex("FPAId");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.HasIndex("RoomTypeId");
 
                     b.ToTable("Subject");
@@ -331,7 +331,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("int unsigned");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("BirthDate")
@@ -377,7 +376,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("Active")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("tinyint(1)");
 
                     b.Property<Guid>("InstituteId")
@@ -530,6 +528,17 @@ namespace TimeasyAPI.Migrations
                     b.Navigation("Timetable");
                 });
 
+            modelBuilder.Entity("TimeasyAPI.src.Models.Interval", b =>
+                {
+                    b.HasOne("TimeasyAPI.src.Models.Institute", "Institute")
+                        .WithMany("Intervals")
+                        .HasForeignKey("InstituteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Institute");
+                });
+
             modelBuilder.Entity("TimeasyAPI.src.Models.Room", b =>
                 {
                     b.HasOne("TimeasyAPI.src.Models.RoomType", "Type")
@@ -650,6 +659,8 @@ namespace TimeasyAPI.Migrations
             modelBuilder.Entity("TimeasyAPI.src.Models.Institute", b =>
                 {
                     b.Navigation("Courses");
+
+                    b.Navigation("Intervals");
 
                     b.Navigation("Teachers");
 

@@ -35,7 +35,7 @@ namespace TimeasyAPI.src.Services
                 _unitOfWork.CreateTransaction();
                 room = await _roomRepository.CreateAsync(room);
                 _unitOfWork.Commit();
-                _unitOfWork.SaveChanges();
+                await _unitOfWork.SaveChangesAsync();
             }
             catch(Exception ex)
             {

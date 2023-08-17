@@ -49,7 +49,7 @@ namespace TimeasyAPI.src.Services
                 _unitOfWork.CreateTransaction();
                 await _userRepository.CreateAsync(createUserRequest);
                 await _instituteRepository.CreateAsync(createUserRequest.Institute);
-                _unitOfWork.SaveChanges();
+                await _unitOfWork.SaveChangesAsync();
                 _unitOfWork.Commit();
 
                 return createUserRequest.EntityToMap();

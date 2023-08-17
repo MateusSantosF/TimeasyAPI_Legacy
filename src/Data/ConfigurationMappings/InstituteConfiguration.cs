@@ -20,6 +20,10 @@ namespace TimeasyAPI.src.Data.Mappings
                .IsRequired()
                .HasForeignKey(c => c.InstituteId);
 
+            builder.HasMany(i => i.Intervals)
+                .WithOne(i => i.Institute)
+                .HasForeignKey(i => i.InstituteId);
+
             builder
               .HasMany(i => i.Teachers)
               .WithOne(t => t.Institute)

@@ -10,9 +10,9 @@ namespace TimeasyAPI.src.Repositories.Interfaces
 
         public Task<T> CreateAsync(T entity);
 
-        public Task UpdateAsync(T entity);
+        public void Update(T entity);
 
-        public Task DeleteAsync(T entity);   
+        public void Delete(T entity);   
 
         public Task<T> GetByIdAsync(Guid id);
 

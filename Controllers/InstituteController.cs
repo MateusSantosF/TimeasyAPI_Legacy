@@ -8,14 +8,16 @@ namespace TimeasyAPI.Controllers
     public class InstituteController : ControllerBase
     {
         private readonly IInstituteServices _instituteServices;
-        public InstituteController(IInstituteServices instituteServices)
+        private readonly IIntervalServices _intervalServices;
+        public InstituteController(IInstituteServices instituteServices, IIntervalServices intervalServices)
         {
             _instituteServices = instituteServices;
+            _intervalServices = intervalServices;
         }
 
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateInstituteRequest request)
+        public async Task<IActionResult> Update([FromBody] UpdateInstituteRequest request)
         {
 
             if (!ModelState.IsValid)
@@ -23,6 +25,32 @@ namespace TimeasyAPI.Controllers
                 return BadRequest(GetModelErrors());
             }
             await _instituteServices.UpdateAsync(request);
+            return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FindById(string instituteId)
+        {
+            return Ok(await _instituteServices.GetById(instituteId));
+        }
+
+        [HttpPatch("intervals")]
+        public async Task<IActionResult> AddIntervals([FromBody] AddIntervalsRequest request)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(GetModelErrors());
+            }
+
+            await _intervalServices.AddIntervalsAsync(request);
+            return NoContent();
+        }
+
+        [HttpDelete("intervals")]
+        public async Task<IActionResult> RemoveInterval(string intervalId)
+        {
+            await _intervalServices.DeleteAsync(intervalId);
             return NoContent();
         }
 

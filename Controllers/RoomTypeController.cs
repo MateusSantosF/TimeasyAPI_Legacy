@@ -18,7 +18,7 @@ namespace TimeasyAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateRoomTypeRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateRoomTypeRequest request)
         {
             if (!ModelState.IsValid)
             {

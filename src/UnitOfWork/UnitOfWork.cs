@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using System.Threading;
 using TimeasyAPI.src.Data;
 
 namespace TimeasyAPI.src.UnitOfWork
@@ -15,16 +14,16 @@ namespace TimeasyAPI.src.UnitOfWork
       
         public void CreateTransaction()
         {
-            _transactionObj =  _dbContext.Database.BeginTransaction();
+            _transactionObj = _dbContext.Database.BeginTransaction();
         }
         public void Commit()
         {
             _transactionObj?.Commit();
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            _dbContext.SaveChanges();
+             await _dbContext.SaveChangesAsync();
         }
 
         public void Rollback()
@@ -39,7 +38,5 @@ namespace TimeasyAPI.src.UnitOfWork
 
             }
         }
-
-      
     }
 }

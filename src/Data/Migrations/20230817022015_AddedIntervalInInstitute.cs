@@ -5,7 +5,7 @@
 namespace TimeasyAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdatedBaseEntity : Migration
+    public partial class AddedIntervalInInstitute : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -17,6 +17,7 @@ namespace TimeasyAPI.src.Models
         public bool Saturday { get; set; }
 
         // EF Relations
+        public ICollection<Interval> Intervals { get; set; }
         public ICollection<Course> Courses { get; set; }
         public ICollection<Timetable> Timetables { get; set; }
         public ICollection<Teacher> Teachers { get; set; }

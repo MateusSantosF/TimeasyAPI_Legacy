@@ -25,7 +25,7 @@ namespace TimeasyAPI.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [AllowAnonymous]
-        public async Task<IActionResult> Auth(AuthRequest request)
+        public async Task<IActionResult> Auth([FromBody] AuthRequest request)
         {
             if (!ModelState.IsValid)
             {

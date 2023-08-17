@@ -1,4 +1,6 @@
-﻿namespace TimeasyAPI.src.DTOs.Institute
+﻿using TimeasyAPI.src.DTOs.Interval;
+
+namespace TimeasyAPI.src.DTOs.Institute
 {
     public class InstituteDTO
     {
@@ -12,5 +14,7 @@
         public bool Thursday { get; set; }
         public bool Friday { get; set; }
         public bool Saturday { get; set; }
+
+        public List<IntervalDTO> Intervals { get; set; }
     }
 }

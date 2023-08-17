@@ -17,6 +17,9 @@ namespace TimeasyAPI.src.Helpers
             serviceCollection.AddScoped<IRoomServices, RoomServices>();
             serviceCollection.AddScoped<IRoomTypeServices, RoomTypeServices>();
             serviceCollection.AddScoped<IInstituteServices, InstituteServices>();
+            serviceCollection.AddScoped<IIntervalRepository, IntervalRepository>();
+            serviceCollection.AddScoped<IInstituteRepository, InstituteRepository>();
+            serviceCollection.AddScoped<IIntervalServices, IntervalServices>();
         }
     }
 }

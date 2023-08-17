@@ -5,9 +5,9 @@ namespace TimeasyAPI.src.Services.Interfaces
 {
     public interface IInstituteServices
     {
-
         public Task UpdateAsync(UpdateInstituteRequest request);
 
+        public Task<InstituteDTO> GetById(string id);
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using TimeasyAPI.src.DTOs.Institute.Request;
+﻿using TimeasyAPI.src.DTOs.Institute;
+using TimeasyAPI.src.DTOs.Institute.Request;
 using TimeasyAPI.src.Models;
 
 namespace TimeasyAPI.src.Mappings
@@ -20,6 +21,24 @@ namespace TimeasyAPI.src.Mappings
                 Thursday = institute.Thursday,
                 Friday = institute.Friday,
                 Saturday = institute.Saturday
+            };
+        }
+
+        public static InstituteDTO EntitieToMap(this Institute institute)
+        {
+            return new InstituteDTO
+            {
+                Id = institute.Id.ToString(),
+                Name = institute.Name,
+                OpenHour = institute.OpenHour,
+                CloseHour = institute.CloseHour,
+                Monday = institute.Monday,
+                Tuesday = institute.Tuesday,
+                Wednesday = institute.Wednesday,
+                Thursday = institute.Thursday,
+                Friday = institute.Friday,
+                Saturday = institute.Saturday,
+                Intervals = institute?.Intervals.MapToEntitie()
             };
         }
 

@@ -1,23 +1,20 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
-using TimeasyAPI.src.DTOs.Institute;
 using TimeasyAPI.src.DTOs.Institute.Request;
 using TimeasyAPI.src.Mappings;
-using TimeasyAPI.src.Models;
-using TimeasyAPI.src.Repositories;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
 
 namespace TimeasyAPI.src.Services
 {
-    public class InstituteServices : IInstituteServices
+    public class IntervalServices : IIntervalServices
     {
 
         private IUnitOfWork _unitOfWork;
         private IInstituteRepository _instituteRepository;
         private IIntervalRepository _intervalRepository;
         private Serilog.ILogger _logger;
-        public InstituteServices(IInstituteRepository instituteRepository, IIntervalRepository intervalRepository, IUnitOfWork unitOfWork, Serilog.ILogger logger)
+        public IntervalServices(IInstituteRepository instituteRepository, IIntervalRepository intervalRepository, IUnitOfWork unitOfWork, Serilog.ILogger logger)
 
         {
             _intervalRepository = intervalRepository;
@@ -26,14 +23,14 @@ namespace TimeasyAPI.src.Services
             _logger = logger;
         }
 
-        public async Task AddIntervals(AddIntervalsRequest request)
+        public async Task AddIntervalsAsync(AddIntervalsRequest request)
         {
             try
             {
                 var instituteId = Guid.Parse(request.InstituteId);
                 var institute = await _instituteRepository.GetByIdAsync(instituteId);
 
-                if(institute == null)
+                if (institute == null)
                 {
                     throw new AppException("Não foi encontrado nenhum instituto com o Id informado.");
                 }
@@ -44,43 +41,12 @@ namespace TimeasyAPI.src.Services
                     interval.InstituteId = instituteId;
                     return interval;
                 }).ToList();
-            
+
 
                 _unitOfWork.CreateTransaction();
                 await _intervalRepository.AddRange(intervals);
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
-            }
-            catch(FormatException)
-            {
-                throw new AppException("Id inválido");
-            }
-            catch (AppException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error($"Erro ao adicionar intervalos ${ex.Message}");
-                _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao atualizar instituto. {ex.Message}");
-            }
-
-        }
-
-        public async Task<InstituteDTO> GetById(string id)
-        {
-            try
-            {
-                var instituteId = Guid.Parse(id);
-                var institute = await _instituteRepository.GetByIdWithIntervalsAsync(instituteId);
-
-                if (institute == null)
-                {
-                    throw new AppException("Não foi encontrado nenhum instituto com o Id informado.");
-                }
-
-                return institute.EntitieToMap();
             }
             catch (FormatException)
             {
@@ -92,30 +58,42 @@ namespace TimeasyAPI.src.Services
             }
             catch (Exception ex)
             {
-                _logger.Error($"Erro ao buscar instituto. ${ex.Message}");
+                _logger.Error($"Erro ao adicionar intervalos ${ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao buscar instituto. {ex.Message}");
+                throw new DatabaseException($"Erro ao adicionar intervalos. {ex.Message}");
             }
         }
 
-        public async Task UpdateAsync(UpdateInstituteRequest request)
+        public async Task DeleteAsync(string id)
         {
-
-            // TODO verificar se a instituição que está sendo atualizada é mesmo do usuario que fez a request
-
             try
             {
-                var updatedInstitute = request.MapToEntitie();
+                var intervalId = Guid.Parse(id);
+                var interval = await _intervalRepository.GetByIdAsync(intervalId);
+
+                if (interval == null)
+                {
+                    throw new AppException("Não foi encontrado nenhum intervalo com o Id informado.");
+                }
+
                 _unitOfWork.CreateTransaction();
-                 _instituteRepository.Update(updatedInstitute);
+                 _intervalRepository.Delete(interval);
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
             }
-            catch(Exception ex)
-            {          
-                _logger.Error($"Erro ao atualizar instituto ${ex.Message}");
+            catch (FormatException)
+            {
+                throw new AppException("Id inválido");
+            }
+            catch (AppException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Erro ao deletar intervalo. ${ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao atualizar instituto {ex.Message}");
+                throw new DatabaseException($"Erro ao deletar intervalo. {ex.Message}");
             }
         }
     }

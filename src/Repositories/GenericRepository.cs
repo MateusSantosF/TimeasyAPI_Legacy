@@ -38,20 +38,19 @@ namespace TimeasyAPI.src.Repositories
             }
         }
 
-        public Task DeleteAsync(T entity)
+        public void Delete(T entity)
         {
             _entitie.Remove(entity); 
-            return Task.CompletedTask;
         }
 
         public async Task<PagedResult<T>> GetAllAsync(int page, int pageSize)
         {
-            return await _entitie.GetPagedAsync(page, pageSize);
+            return await _entitie.Where(e => e.Active == true).GetPagedAsync(page, pageSize);
         }
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await _entitie.Where(entitie => entitie.Id.Equals(id)).FirstOrDefaultAsync();
+            return await _entitie.AsNoTracking().Where(entitie => entitie.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
@@ -59,10 +58,9 @@ namespace TimeasyAPI.src.Repositories
             return await _entitie.AsNoTracking().Where(predicate).FirstOrDefaultAsync();
         }
 
-        public Task UpdateAsync(T entity)
+        public void Update(T entity)
         {
             DbContext.Update(entity);
-            return Task.CompletedTask;
         }
 
     }
