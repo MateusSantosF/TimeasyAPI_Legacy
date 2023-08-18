@@ -9,7 +9,7 @@ using TimeasyAPI.src.Services.Interfaces;
 namespace TimeasyAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController: ControllerBase
+    public class UserController: MainController
     {   
 
         private readonly IUserServices _userService;
@@ -22,8 +22,6 @@ namespace TimeasyAPI.Controllers
 
         [HttpPost("auth")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [AllowAnonymous]
         public async Task<IActionResult> Auth([FromBody] AuthRequest request)
         {
@@ -47,16 +45,5 @@ namespace TimeasyAPI.Controllers
     
             return Ok(await _userService.CreateRootUserAsync(request));
         }
-
-        private string GetModelErrors()
-        {
-            var validationErrors = ModelState.Values
-                                            .SelectMany(v => v.Errors)
-                                            .Select(e => e.ErrorMessage)
-                                            .ToList();
-
-            return string.Join(" ", validationErrors);
-        }
-
     }
 }

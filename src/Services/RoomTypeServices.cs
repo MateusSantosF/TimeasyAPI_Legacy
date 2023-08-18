@@ -1,8 +1,10 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.RoomType;
+using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
+using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
@@ -64,6 +66,11 @@ namespace TimeasyAPI.src.Services
                 throw new AppException("Tipo de sala não encontrado.");
             }
 
+            if(!result.Active)
+            {
+                return;
+            }
+
             result.Active = false;
 
             try
@@ -100,6 +107,64 @@ namespace TimeasyAPI.src.Services
             };
 
             return pagedResultDTO;
+        }
+
+        public async Task UpdateAsync(UpdateRoomTypeRequest request)
+        {
+
+            var roomTypeId = request.Id.TryGetIdByString();
+
+            var result = await _roomTypeRepository.GetByIdAsync(roomTypeId);
+
+            if(result == null)
+            {
+                throw new AppException("Tipo de sala não encontrado.");
+            }
+
+            if (!string.IsNullOrEmpty(request.Name))
+            {
+                result.Name = request.Name;
+            }
+
+            if(!string.IsNullOrEmpty(request.OperationalSystem))
+            {
+            }
+
+ 
+            if (request.IsComputerLab.HasValue)
+            {
+                var isLab = request.IsComputerLab.Value;
+                
+                if(isLab && request.OperationalSystem == null)
+                {
+                    throw new AppException("OperationalSystem is required.");
+                }
+
+                if (request.OperationalSystem != null && isLab)
+                {
+                    result.IsComputerLab = true;
+                    result.OperationalSystem = Enum.Parse<OperationalSystem>(request.OperationalSystem, true);
+                }
+            }
+            else
+            {
+                result.OperationalSystem = null;
+            }
+
+            try
+            {
+                _unitOfWork.CreateTransaction();
+                _roomTypeRepository.Update(result);
+                _unitOfWork.Commit();
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                _logger.Error($"Erro ao atualizar RoomType");
+                _unitOfWork.Rollback();
+                throw new AppException("Erro ao atualizar tipo sala.");
+            }
+
         }
     }
 }

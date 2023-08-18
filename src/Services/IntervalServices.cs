@@ -75,6 +75,12 @@ namespace TimeasyAPI.src.Services
                 {
                     throw new AppException("Não foi encontrado nenhum intervalo com o Id informado.");
                 }
+
+                if (!interval.Active)
+                {
+                    return;
+                }
+
                 interval.Active = false;
 
                 _unitOfWork.CreateTransaction();

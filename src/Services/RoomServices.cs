@@ -6,6 +6,7 @@ using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
+using TimeasyAPI.src.Helpers;
 
 namespace TimeasyAPI.src.Services
 {
@@ -74,6 +75,11 @@ namespace TimeasyAPI.src.Services
                 throw new AppException("Nenhuma sala encontrada com o Id informado.");
             }
 
+            if (!result.Active)
+            {
+                return;
+            }
+
             try
             {
                 result.Active = false;
@@ -91,7 +97,7 @@ namespace TimeasyAPI.src.Services
 
         public async Task UpdateAsync(UpdateRoomRequest request)
         {
-            var roomId = TryGetIdByString(request.Id);
+            var roomId = request.Id.TryGetIdByString();
 
             var result = await _roomRepository.GetByIdAsync(roomId);
 
@@ -134,15 +140,6 @@ namespace TimeasyAPI.src.Services
 
         }
 
-        private static Guid TryGetIdByString(string id)
-        {
 
-            if (!Guid.TryParse(id, out Guid entitieId))
-            {
-                throw new AppException("Id inválido");
-            }
-
-            return entitieId;
-        }
     }
 }

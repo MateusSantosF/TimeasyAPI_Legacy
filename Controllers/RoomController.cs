@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TimeasyAPI.src.DTOs.Room.Request;
 using TimeasyAPI.src.Services.Interfaces;
 
 namespace TimeasyAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class RoomController : ControllerBase
+    public class RoomController : MainController
     {
 
         private readonly IRoomServices _roomServices;
@@ -45,20 +46,12 @@ namespace TimeasyAPI.Controllers
         }
 
         [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> RemoveByIdAsync(Guid id)
         {
             await _roomServices.RemoveByIdAsync(id);
             return NoContent();
         }
 
-        private string GetModelErrors()
-        {
-            var validationErrors = ModelState.Values
-                                            .SelectMany(v => v.Errors)
-                                            .Select(e => e.ErrorMessage)
-                                            .ToList();
-
-            return string.Join(" ", validationErrors);
-        }
     }
 }

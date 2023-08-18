@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TimeasyAPI.src.DTOs.Institute.Request;
 using TimeasyAPI.src.Services.Interfaces;
 
 namespace TimeasyAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class InstituteController : ControllerBase
+    public class InstituteController : MainController
     {
         private readonly IInstituteServices _instituteServices;
         private readonly IIntervalServices _intervalServices;
@@ -35,6 +36,7 @@ namespace TimeasyAPI.Controllers
         }
 
         [HttpPatch("intervals")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> AddIntervals([FromBody] AddIntervalsRequest request)
         {
 
@@ -52,16 +54,6 @@ namespace TimeasyAPI.Controllers
         {
             await _intervalServices.DeleteAsync(intervalId);
             return NoContent();
-        }
-
-        private string GetModelErrors()
-        {
-            var validationErrors = ModelState.Values
-                                            .SelectMany(v => v.Errors)
-                                            .Select(e => e.ErrorMessage)
-                                            .ToList();
-
-            return string.Join(" ", validationErrors);
         }
 
     }
