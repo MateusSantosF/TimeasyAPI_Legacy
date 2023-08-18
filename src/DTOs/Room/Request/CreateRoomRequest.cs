@@ -13,7 +13,7 @@ namespace TimeasyAPI.src.DTOs.Room.Request
         public string Block { get; set; }
 
         [Required(ErrorMessage = "Capacity is required.")]
-        [Range(1, int.MaxValue, ErrorMessage = "Capacity must be greater than 0.")]
+        [Range(1, 1000, ErrorMessage = "Capacity must be greater than 0.")]
         public int Capacity { get; set; }
 
         [Required(ErrorMessage = "Type is required.")]

@@ -33,6 +33,13 @@ namespace TimeasyAPI.Controllers
             return Ok(await _roomServices.GetAllAsync(page, pageSize));
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> RemoveByIdAsync(string id)
+        {
+            await _roomServices.RemoveByIdAsync(id);
+            return NoContent();
+        }
+
         private string GetModelErrors()
         {
             var validationErrors = ModelState.Values

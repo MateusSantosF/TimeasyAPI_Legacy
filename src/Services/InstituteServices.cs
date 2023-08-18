@@ -2,8 +2,6 @@
 using TimeasyAPI.src.DTOs.Institute;
 using TimeasyAPI.src.DTOs.Institute.Request;
 using TimeasyAPI.src.Mappings;
-using TimeasyAPI.src.Models;
-using TimeasyAPI.src.Repositories;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;

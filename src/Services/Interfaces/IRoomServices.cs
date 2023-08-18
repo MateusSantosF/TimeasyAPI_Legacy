@@ -8,6 +8,8 @@ namespace TimeasyAPI.src.Services.Interfaces
     {
         Task<PagedResult<RoomDTO>> GetAllAsync(int page, int pageSize);
 
+        Task RemoveByIdAsync(string id);
+
         Task<RoomDTO> CreateAsync(CreateRoomRequest request);
     }
 }

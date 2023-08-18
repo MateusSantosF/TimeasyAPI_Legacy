@@ -1,13 +1,11 @@
-﻿using TimeasyAPI.src.Models.Core;
-using TimeasyAPI.src.Models;
+﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
+using TimeasyAPI.src.DTOs.Room;
+using TimeasyAPI.src.DTOs.Room.Request;
+using TimeasyAPI.src.Mappings;
+using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
-using TimeasyAPI.src.Models.UI;
-using TimeasyAPI.src.DTOs.Room;
-using TimeasyAPI.src.Mappings;
-using TimeasyAPI.src.DTOs.Room.Request;
-using TimeasyAPI.Controllers.Middlewares.Exceptions;
 
 namespace TimeasyAPI.src.Services
 {
@@ -64,6 +62,38 @@ namespace TimeasyAPI.src.Services
             };
 
             return pagedResultDTO;
+        }
+
+        public async Task RemoveByIdAsync(string id)
+        {
+
+            var isValidId = Guid.TryParse(id, out Guid roomid);
+
+            if (!isValidId)
+            {
+                throw new AppException("Id inválido");
+            }
+
+            var result = await _roomRepository.GetByIdAsync(roomid);
+
+            if(result is null)
+            {
+                throw new AppException("Nenhuma sala encontrada com o Id informado.");
+            }
+
+            try
+            {
+                result.Active = false;
+                _roomRepository.Update(result);
+
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new DatabaseException(ex.Message);
+            }
+            
+
         }
     }
 }

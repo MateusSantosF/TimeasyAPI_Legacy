@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 using TimeasyAPI.src.Data;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Models;
@@ -24,7 +23,7 @@ namespace TimeasyAPI.src.Repositories
         }
         public async Task<PagedResult<Room>> GetAllWithTypeAsync(int page, int pageSize)
         {
-            return await _entitie.Include(room => room.Type).GetPagedAsync(page, pageSize);
+            return await _entitie.Include(room => room.Type).AsNoTracking().Where(r => r.Active == true).GetPagedAsync(page, pageSize);
         }
     }
 }
