@@ -55,6 +55,33 @@ namespace TimeasyAPI.src.Services
             return newRoomType.EntitieToMap();
         }
 
+        public async Task DeleteAsync(Guid id)
+        {
+            var result = await _roomTypeRepository.GetByIdAsync(id);
+            
+            if(result is null)
+            {
+                throw new AppException("Tipo de sala não encontrado.");
+            }
+
+            result.Active = false;
+
+            try
+            {
+                _unitOfWork.CreateTransaction();
+                _roomTypeRepository.Update(result);
+                _unitOfWork.Commit();
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                _logger.Error($"Erro ao deletar RoomType");
+                _unitOfWork.Rollback();
+                throw new AppException("Erro ao criar tipo sala.");
+            }
+        
+        }
+
         public async Task<PagedResult<RoomTypeDTO>> GetAllAsync(int page, int pageSize)
         {
             var result = await _roomTypeRepository.GetAllAsync(page, pageSize);

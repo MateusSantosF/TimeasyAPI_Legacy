@@ -45,7 +45,7 @@ namespace TimeasyAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> RemoveByIdAsync(string id)
+        public async Task<IActionResult> RemoveByIdAsync(Guid id)
         {
             await _roomServices.RemoveByIdAsync(id);
             return NoContent();

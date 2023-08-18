@@ -64,12 +64,10 @@ namespace TimeasyAPI.src.Services
             return pagedResultDTO;
         }
 
-        public async Task RemoveByIdAsync(string id)
+        public async Task RemoveByIdAsync(Guid id)
         {
 
-            var roomId = TryGetIdByString(id);
-
-            var result = await _roomRepository.GetByIdAsync(roomId);
+            var result = await _roomRepository.GetByIdAsync(id);
 
             if(result is null)
             {
