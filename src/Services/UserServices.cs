@@ -29,11 +29,6 @@ namespace TimeasyAPI.src.Services
             _logger = logger;
         }
 
-        public Task<UserDTO> Auth(string email, string password)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<CreateUserResponse> CreateRootUserAsync(CreateUserRequest request)
         {
             try

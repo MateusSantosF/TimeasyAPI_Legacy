@@ -67,14 +67,9 @@ namespace TimeasyAPI.src.Services
         public async Task RemoveByIdAsync(string id)
         {
 
-            var isValidId = Guid.TryParse(id, out Guid roomid);
+            var roomId = TryGetIdByString(id);
 
-            if (!isValidId)
-            {
-                throw new AppException("Id inválido");
-            }
-
-            var result = await _roomRepository.GetByIdAsync(roomid);
+            var result = await _roomRepository.GetByIdAsync(roomId);
 
             if(result is null)
             {
@@ -88,12 +83,68 @@ namespace TimeasyAPI.src.Services
 
                 await _unitOfWork.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                throw new DatabaseException(ex.Message);
+                throw new DatabaseException("Um erro ocorreu durante a atualização.");
             }
             
 
+        }
+
+        public async Task UpdateAsync(UpdateRoomRequest request)
+        {
+            var roomId = TryGetIdByString(request.Id);
+
+            var result = await _roomRepository.GetByIdAsync(roomId);
+
+            if (result is null)
+            {
+                throw new AppException("Nenhuma sala encontrada com o Id informado.");
+            }
+                
+            if(request.TypeId != null)
+            {
+                result.RoomTypeId = Guid.Parse(request.TypeId);
+            }
+
+            if( request.Capacity != null && request.Capacity > 0)
+            {
+                result.Capacity = (int)request.Capacity;
+            }
+
+            if(!string.IsNullOrEmpty(request.Name)  && request.Name.Length < 100)
+            {
+                result.Name = request.Name;
+            }
+
+            if( !string.IsNullOrEmpty(request.Block) && request.Block.Length < 50)
+            {
+                result.Block = request.Block;
+            }
+
+            try
+            {
+                _unitOfWork.CreateTransaction();
+                _roomRepository.Update(result);
+                _unitOfWork.Commit();
+                await _unitOfWork.SaveChangesAsync();
+
+            }catch(Exception )
+            {
+                throw new DatabaseException("Um erro ocorreu durante a atualização.");
+            }
+
+        }
+
+        private static Guid TryGetIdByString(string id)
+        {
+
+            if (!Guid.TryParse(id, out Guid entitieId))
+            {
+                throw new AppException("Id inválido");
+            }
+
+            return entitieId;
         }
     }
 }

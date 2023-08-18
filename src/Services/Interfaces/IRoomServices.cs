@@ -11,5 +11,7 @@ namespace TimeasyAPI.src.Services.Interfaces
         Task RemoveByIdAsync(string id);
 
         Task<RoomDTO> CreateAsync(CreateRoomRequest request);
+
+        Task UpdateAsync(UpdateRoomRequest request);
     }
 }

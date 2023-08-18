@@ -11,7 +11,12 @@ namespace TimeasyAPI.src.Validators
 
             var os = (string)value;
 
-            if(Enum.TryParse<OperationalSystem>(os, ignoreCase:true, out var operationalSystem))
+            if(string.IsNullOrEmpty(os))
+            {
+                return true;
+            }
+
+            if(Enum.TryParse<OperationalSystem>(os, ignoreCase:true, out _))
             {
                 return true;
             }

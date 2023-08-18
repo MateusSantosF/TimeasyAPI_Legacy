@@ -27,8 +27,19 @@ namespace TimeasyAPI.Controllers
             return Ok(await _roomServices.CreateAsync(request));
         }
 
+        [HttpPatch]
+        public async Task<IActionResult> UpdateRoomAsync([FromBody] UpdateRoomRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(GetModelErrors());
+            }
+            await _roomServices.UpdateAsync(request);
+            return Ok();
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetAllPaged(int page, int pageSize)
+        public async Task<IActionResult> GetAllPaged(int page = 1, int pageSize = 10)
         {
             return Ok(await _roomServices.GetAllAsync(page, pageSize));
         }

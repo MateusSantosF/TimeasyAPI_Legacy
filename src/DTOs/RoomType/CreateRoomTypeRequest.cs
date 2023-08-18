@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using TimeasyAPI.src.Validators;
 
 namespace TimeasyAPI.src.DTOs.RoomType
@@ -10,10 +11,10 @@ namespace TimeasyAPI.src.DTOs.RoomType
         [MaxLength(100, ErrorMessage = "Name must be at most 100 characters.")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "IsComputerLab is required.")]
         public bool IsComputerLab { get; set; }
 
-
         [OperationalSystem(ErrorMessage = "Invalid OperationalSystem name")]
-        public string OperationalSystem { get; set; }
+        public string? OperationalSystem { get; set; }
     }
 }

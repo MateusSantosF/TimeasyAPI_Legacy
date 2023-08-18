@@ -11,11 +11,10 @@ namespace TimeasyAPI.src.Mappings
         {
             return new RoomTypeDTO
             {
-
                 Id = room.Id.ToString(),
                 Name = room.Name,
                 IsComputerLab = room.IsComputerLab,
-                OperationalSystem = room.OperationalSystem.ToString()
+                OperationalSystem = room.OperationalSystem?.ToString()
             };
         }
 
@@ -25,7 +24,7 @@ namespace TimeasyAPI.src.Mappings
             {
                 Name = room.Name,
                 IsComputerLab = room.IsComputerLab,
-                OperationalSystem = Enum.Parse<OperationalSystem>(room.OperationalSystem, true)
+                OperationalSystem = !string.IsNullOrEmpty(room.OperationalSystem) ? Enum.Parse<OperationalSystem>(room.OperationalSystem, true) : null
             };
         }
     }

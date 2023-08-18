@@ -29,7 +29,7 @@ namespace TimeasyAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPagedAsync(int page, int pageSize)
+        public async Task<IActionResult> GetAllPagedAsync(int page = 1, int pageSize = 10)
         {
             return Ok(await _roomTypeService.GetAllAsync(page, pageSize));
         }

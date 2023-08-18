@@ -31,6 +31,5 @@ namespace TimeasyAPI.src.Mappings
             };
         }
 
-
     }
 }
