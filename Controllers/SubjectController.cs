@@ -11,11 +11,19 @@ namespace TimeasyAPI.Controllers
     public class SubjectController : MainController
     {
         private readonly ISubjectService _subjectService;
+
+        /// <summary>
+        ///  Construtor do controller
+        /// </summary>
         public SubjectController(ISubjectService subjectService) { 
             _subjectService = subjectService;   
         }
 
-
+        /// <summary>
+        /// Cria uma nova disciplina
+        /// </summary>
+        /// <param name="request">Informações da nova disciplina</param>
+        /// <returns>Retorna a nova disciplina com seu Id.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateSubject([FromBody] CreateSubjectRequest request)
         {
@@ -28,10 +36,9 @@ namespace TimeasyAPI.Controllers
         }
 
         /// <summary>
-        /// 
+        ///  Atualiza a disciplina informada
         /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
+        /// <param name="request">Informações da disciplina a serem atualizadas</param>
         [HttpPatch]
         public async Task<IActionResult> UpdateSubjectAsync([FromBody] UpdateSubjectRequest request)
         {
@@ -47,7 +54,7 @@ namespace TimeasyAPI.Controllers
         /// <summary>
         /// Retorna todas as disciplinas paginadas
         /// </summary>
-        /// <param name="page">Indice da página</param>
+        /// <param name="page">Número da página</param>
         /// <param name="pageSize">Número de items por página</param>
         /// <returns>teste</returns>
         [HttpGet]
@@ -56,6 +63,10 @@ namespace TimeasyAPI.Controllers
             return Ok(await _subjectService.GetAllAsync(page, pageSize));
         }
 
+        /// <summary>
+        /// Deleta uma disciplina com base no Id
+        /// </summary>
+        /// <param name="id">Id da disciplina</param>
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> RemoveByIdAsync(Guid id)

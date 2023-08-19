@@ -19,7 +19,11 @@ namespace TimeasyAPI.Controllers
             _userService = userService;
         }
 
-
+        /// <summary>
+        ///  Realiza a autenticação do usuário
+        /// </summary>
+        /// <param name="request">Email e senha do usuário</param>
+        /// <returns>Usuário com suas informações e Token de acesso</returns>
         [HttpPost("auth")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [AllowAnonymous]
@@ -27,12 +31,17 @@ namespace TimeasyAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                throw new AppException(GetModelErrors());
+                return BadRequest(GetModelErrors());
             }
 
             return Ok(await _userService.AuthAsync(request));
         }
 
+        /// <summary>
+        /// Cria o usuário root (administrador) da aplicação, assim como, uma instituição de ensino.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Informações do novo usuário e instituição criados</returns>
         [HttpPost("create")]
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
@@ -40,7 +49,7 @@ namespace TimeasyAPI.Controllers
 
             if (!ModelState.IsValid)
             {
-                throw new AppException(GetModelErrors());
+                return BadRequest(GetModelErrors());
             }
     
             return Ok(await _userService.CreateRootUserAsync(request));
