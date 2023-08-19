@@ -20,12 +20,12 @@ namespace TimeasyAPI.src.Models
         [Required(ErrorMessage = "Period is required.")]
         public PeriodType Period { get; set; }
 
+        public List<CourseSubject> CourseSubject { get; } = new();
+
         // EF Relation
         public Guid InstituteId { get; set; }
         public Institute Institute { get; set; }
-        public ICollection<CourseSubject> CourseSubject { get; set; }
-
-        public ICollection<TimetableCourses> TimetableCourses { get; set; }
+        public ICollection<TimetableCourses> TimetableCourses { get;  }
 
     }
 }

@@ -16,6 +16,12 @@ namespace TimeasyAPI.Controllers
             _tokenService = tokenService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllPagedAsync(int page = 1, int pageSize = 10)
+        {
+            return Ok(await _courseService.GetAllAsync(page, pageSize));
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateCourseRequest request)
         {
@@ -25,6 +31,14 @@ namespace TimeasyAPI.Controllers
             }
 
             return Ok(await _courseService.CreateAsync(request, _tokenService.GetInstituteIdByCurrentUser(User)));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync(Guid id)
+        {
+
+            await _courseService.RemoveByIdAsync(id);
+            return NoContent();
         }
     }
 }

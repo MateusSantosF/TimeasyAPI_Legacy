@@ -89,7 +89,7 @@ namespace TimeasyAPI.src.Services
             }
             catch(Exception)
             {
-                throw new DatabaseException("Um erro ocorreu durante a atualização.");
+                throw new DatabaseException("Um erro ocorreu durante a remoção.");
             }
             
 

@@ -9,9 +9,10 @@ namespace TimeasyAPI.src.Models
         public string Name { get; set; }
         public SubjectComplexity Complexity { get; set; }
         public RoomType RoomTypeNeeded { get; set; }
+        public ICollection<CourseSubject> CourseSubject { get; }
 
         //EF Relations
-        public ICollection<CourseSubject> CourseSubject { get; set; }
+
         public ICollection<TimetableSubjects> TimetableSubjects { get; set; }
 
         public Guid RoomTypeId { get; set; }
