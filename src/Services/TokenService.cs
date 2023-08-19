@@ -22,7 +22,7 @@ namespace TimeasyAPI.src.Services
             _settings = settings.Value;
         }
 
-        public string GetInstituteIdByCurrentUser(ClaimsPrincipal user)
+        public Guid GetInstituteIdByCurrentUser(ClaimsPrincipal user)
         {
             var instituteId = user.Claims.FirstOrDefault(c => c.Type == INSTITUTE_ID_KEY);
 
@@ -31,10 +31,10 @@ namespace TimeasyAPI.src.Services
                 throw new AppException("Usuário inválido");
             }
 
-            return instituteId.Value;
+            return Guid.Parse(instituteId.Value);
         }
 
-        public string GetUserIdByCurrentUser(ClaimsPrincipal user)
+        public Guid GetUserIdByCurrentUser(ClaimsPrincipal user)
         {
             var userId = user.Claims.FirstOrDefault(c => c.Type == USER_ID_KEY);
 
@@ -43,7 +43,7 @@ namespace TimeasyAPI.src.Services
                 throw new AppException("Usuário inválido");
             }
 
-            return userId.Value;
+            return Guid.Parse(userId.Value);
         }
 
         public string GenerateToken(User user)

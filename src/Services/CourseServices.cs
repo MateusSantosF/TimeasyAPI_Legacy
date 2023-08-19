@@ -17,7 +17,7 @@ namespace TimeasyAPI.src.Services
             _courseRepository = courseRepository;
         }
 
-        public Task<CourseDTO> CreateAsync(CreateCourseRequest request, string instituteId)
+        public Task<CourseDTO> CreateAsync(CreateCourseRequest request, Guid instituteId)
         {
             return Task.FromResult(new CourseDTO());
         }

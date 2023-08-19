@@ -1,12 +1,9 @@
-﻿using System.Globalization;
-using TimeasyAPI.Controllers.Middlewares.Exceptions;
+﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Teacher;
 using TimeasyAPI.src.DTOs.Teacher.Requests;
-using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects.Enums;
-using TimeasyAPI.src.Repositories;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
@@ -26,7 +23,7 @@ namespace TimeasyAPI.src.Services
             _logger = logger;
         }
 
-        public async Task<TeacherDTO> CreateAsync(CreateTeacherRequest request, string instituteId)
+        public async Task<TeacherDTO> CreateAsync(CreateTeacherRequest request, Guid instituteId)
         {
 
             var subject = request.MapToEntitie();
@@ -34,7 +31,7 @@ namespace TimeasyAPI.src.Services
             try
             {
                 _unitOfWork.CreateTransaction();
-                subject.InstituteId = Guid.Parse(instituteId);
+                subject.InstituteId =instituteId;
                 subject = await _teacherRepository.CreateAsync(subject);
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();

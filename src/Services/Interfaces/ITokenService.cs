@@ -7,8 +7,8 @@ namespace TimeasyAPI.src.Services.Interfaces
     {
         string GenerateToken(User user);
 
-        string GetInstituteIdByCurrentUser(ClaimsPrincipal user);
+        Guid GetInstituteIdByCurrentUser(ClaimsPrincipal user);
 
-        string GetUserIdByCurrentUser(ClaimsPrincipal user);
+        Guid GetUserIdByCurrentUser(ClaimsPrincipal user);
     }
 }
