@@ -10,6 +10,8 @@ namespace TimeasyAPI.src.Services.Interfaces
 
         Task RemoveByIdAsync(Guid id);
 
+        Task RemoveCourseSubjectByIdAsync(Guid courseId, Guid subjectId);
+
         Task<CourseDTO> CreateAsync(CreateCourseRequest request, Guid instituteId);
 
         Task UpdateAsync(UpdateCourseRequest request);
