@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TimeasyAPI.src.DTOs.Subject.Requests;
 using TimeasyAPI.src.Services.Interfaces;

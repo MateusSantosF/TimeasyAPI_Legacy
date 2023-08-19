@@ -1,6 +1,5 @@
 ﻿using TimeasyAPI.src.DTOs.Subject;
 using TimeasyAPI.src.DTOs.Subject.Requests;
-
 using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.ValueObjects.Enums;
 

@@ -1,5 +1,4 @@
-﻿using TimeasyAPI.src.DTOs.Subject;
-using TimeasyAPI.src.Models;
+﻿using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 
 namespace TimeasyAPI.src.Repositories.Interfaces

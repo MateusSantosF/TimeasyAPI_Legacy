@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TimeasyAPI.src.DTOs.Room.Request;
 using TimeasyAPI.src.Services.Interfaces;

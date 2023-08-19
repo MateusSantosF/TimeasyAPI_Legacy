@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.User;
 using TimeasyAPI.src.DTOs.User.Requests;
 using TimeasyAPI.src.Services.Interfaces;

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using TimeasyAPI.src.Models.ValueObjects.Enums;
+﻿using TimeasyAPI.src.Models.ValueObjects.Enums;
 
 namespace TimeasyAPI.src.Models
 {
