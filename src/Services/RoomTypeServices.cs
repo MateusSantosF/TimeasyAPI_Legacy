@@ -112,7 +112,7 @@ namespace TimeasyAPI.src.Services
         public async Task UpdateAsync(UpdateRoomTypeRequest request)
         {
 
-            var roomTypeId = request.Id.TryGetIdByString();
+            var roomTypeId = request.Id;
 
             var result = await _roomTypeRepository.GetByIdAsync(roomTypeId);
 

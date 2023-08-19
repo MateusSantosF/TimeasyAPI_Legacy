@@ -25,8 +25,8 @@ namespace TimeasyAPI.src.Mappings
         {
             return new TeacherDTO
             {
-                Id = teacher.Id.ToString(),
-                InstituteId = teacher.InstituteId.ToString(),
+                Id = teacher.Id,
+                InstituteId = teacher.InstituteId,
                 FullName = teacher.FullName,
                 Registration = teacher.Registration,
                 Email = teacher.Email,

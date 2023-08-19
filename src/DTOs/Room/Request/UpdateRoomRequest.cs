@@ -5,7 +5,7 @@ namespace TimeasyAPI.src.DTOs.Room.Request
     public class UpdateRoomRequest
     {
         [Required(ErrorMessage = "Id is required.")]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
 
         [MaxLength(100, ErrorMessage = "Name must be at most 100 characters.")]
@@ -19,6 +19,6 @@ namespace TimeasyAPI.src.DTOs.Room.Request
         public int? Capacity { get; set; }
 
 
-        public string? TypeId { get; set; }
+        public Guid? TypeId { get; set; }
     }
 }

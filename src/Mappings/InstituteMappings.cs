@@ -11,7 +11,7 @@ namespace TimeasyAPI.src.Mappings
         {
             return new Institute
             {
-                Id = Guid.Parse(institute.InstituteId),
+                Id = institute.InstituteId,
                 Name = institute.InstituteName,
                 OpenHour = institute.OpenHour,
                 CloseHour = institute.CloseHour,
@@ -28,7 +28,7 @@ namespace TimeasyAPI.src.Mappings
         {
             return new InstituteDTO
             {
-                Id = institute.Id.ToString(),
+                Id = institute.Id,
                 Name = institute.Name,
                 OpenHour = institute.OpenHour,
                 CloseHour = institute.CloseHour,

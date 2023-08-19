@@ -20,7 +20,7 @@ namespace TimeasyAPI.src.Mappings
         {
             return new Interval
             {
-                Id = Guid.Parse(interval.Id),
+                Id = interval.Id,
                 Start = interval.Start,
                 End = interval.End
             };
@@ -32,7 +32,7 @@ namespace TimeasyAPI.src.Mappings
             {
                 return new IntervalDTO
                 {
-                    Id = i.Id.ToString(),
+                    Id = i.Id,
                     Start = i.Start,
                     End = i.End
                 };

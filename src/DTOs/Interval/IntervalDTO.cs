@@ -4,7 +4,7 @@ namespace TimeasyAPI.src.DTOs.Interval
 {
     public class IntervalDTO
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Start time is required.")]
         [RegularExpression("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "Start time must be in HH:mm format.")]

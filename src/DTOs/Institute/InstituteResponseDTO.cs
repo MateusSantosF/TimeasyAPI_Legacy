@@ -4,7 +4,7 @@ namespace TimeasyAPI.src.DTOs.Institute
 {
     public class InstituteDTO
     {
-        public string Id { get; set; }  
+        public Guid Id { get; set; }  
         public string Name { get; set; }
         public string OpenHour { get; set; }
         public string CloseHour { get; set; }

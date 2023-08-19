@@ -39,11 +39,10 @@ namespace TimeasyAPI.src.Mappings
 
             return new CreateUserResponse
             {
-                UserId = user.Id.ToString(),
-                InstituteId = user.Institute.Id.ToString(),
+                UserId = user.Id,
+                InstituteId = user.Institute.Id,
                 Name = user.FullName,
                 Email = user.Email,
-                Password = user.Password,
                 InstituteName = user.Institute.Name,
                 OpenHour = user.Institute.OpenHour,
                 CloseHour = user.Institute.CloseHour,
@@ -60,7 +59,7 @@ namespace TimeasyAPI.src.Mappings
         {
             return new AuthResponse
             {
-                Id = user.Id.ToString(),
+                Id = user.Id,
                 Email = user.Email,
                 AcessLevel = (uint)user.AcessLevel
             };

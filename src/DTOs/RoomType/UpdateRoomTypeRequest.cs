@@ -7,7 +7,7 @@ namespace TimeasyAPI.src.DTOs.RoomType
     {
 
         [Required]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [MaxLength(100, ErrorMessage = "Name must be at most 100 characters.")]
         public string? Name { get; set; }

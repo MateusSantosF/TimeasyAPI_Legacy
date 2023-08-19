@@ -2,7 +2,7 @@
 {
     public class RoomDTO
     {
-        public string Id { get;set; }
+        public Guid Id { get;set; }
         public string Name { get; set; }
         public string Block { get; set; }
         public int Capacity { get; set; }

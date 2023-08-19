@@ -16,6 +16,6 @@ namespace TimeasyAPI.src.DTOs.Subject.Requests
         public string Complexity { get; set; }
 
         [Required(ErrorMessage = "RoomType is required.")]
-        public string RoomTypeId { get; set; }
+        public Guid RoomTypeId { get; set; }
     }
 }

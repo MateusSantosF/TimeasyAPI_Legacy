@@ -104,7 +104,7 @@ namespace TimeasyAPI.src.Services
         public async Task UpdateAsync(UpdateTeacherRequest request)
         {
 
-            var teacherId = request.TeacherId.TryGetIdByString();
+            var teacherId = request.TeacherId;
 
             var teacher = await _teacherRepository.GetByIdAsync(teacherId);
 
@@ -133,24 +133,24 @@ namespace TimeasyAPI.src.Services
                 teacher.AcademicDegree = Enum.Parse<AcademicDegree>(request.AcademicDegree, true);
             }
 
-            if (request.BirthDate != null)
+            if (request.BirthDate.HasValue)
             {
-                teacher.BirthDate = (DateOnly) request.BirthDate;
+                teacher.BirthDate =  request.BirthDate.Value;
             }
 
-            if (request.TeachingHours != null)
+            if (request.TeachingHours.HasValue)
             {
-                teacher.TeachingHours = (int)request.TeachingHours;
+                teacher.TeachingHours = request.TeachingHours.Value;
             }
 
-            if (request.IfspServiceTime != null)
+            if (request.IfspServiceTime.HasValue)
             {
-                teacher.IfspServiceTime = (DateOnly)request.IfspServiceTime;
+                teacher.IfspServiceTime = request.IfspServiceTime.Value;
             }
 
-            if (request.CampusServiceTime != null)
+            if (request.CampusServiceTime.HasValue)
             {
-                teacher.CampusServiceTime = (DateOnly)request.CampusServiceTime;
+                teacher.CampusServiceTime = request.CampusServiceTime.Value;
             }
 
             try

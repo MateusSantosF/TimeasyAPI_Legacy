@@ -11,7 +11,7 @@ namespace TimeasyAPI.src.Mappings
         {
             return new RoomTypeDTO
             {
-                Id = room.Id.ToString(),
+                Id = room.Id,
                 Name = room.Name,
                 IsComputerLab = room.IsComputerLab,
                 OperationalSystem = room.OperationalSystem?.ToString()

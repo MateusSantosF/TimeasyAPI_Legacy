@@ -6,7 +6,7 @@ namespace TimeasyAPI.src.DTOs.Institute.Request
     public class AddIntervalsRequest
     {
 
-        public string InstituteId {  get; set; }    
+        public Guid InstituteId {  get; set; }    
 
         public List<CreateIntervalRequest> Intervals { get; set; }
     }

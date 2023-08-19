@@ -6,7 +6,7 @@ namespace TimeasyAPI.src.DTOs.Subject.Requests
     public class UpdateSubjectRequest
     {
         [Required(ErrorMessage = "Id is required")]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         
         [MaxLength(10, ErrorMessage = "Acronym must be at most 10 characters.")]
         public string? Acronym { get; set; }

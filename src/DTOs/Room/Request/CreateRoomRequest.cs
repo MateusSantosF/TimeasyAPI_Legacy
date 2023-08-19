@@ -17,7 +17,7 @@ namespace TimeasyAPI.src.DTOs.Room.Request
         public int Capacity { get; set; }
 
         [Required(ErrorMessage = "Type is required.")]
-        public string TypeId { get; set; }
+        public Guid TypeId { get; set; }
 
     }
 }

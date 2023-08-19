@@ -97,7 +97,7 @@ namespace TimeasyAPI.src.Services
 
         public async Task UpdateAsync(UpdateRoomRequest request)
         {
-            var roomId = request.Id.TryGetIdByString();
+            var roomId = request.Id;
 
             var result = await _roomRepository.GetByIdAsync(roomId);
 
@@ -106,14 +106,14 @@ namespace TimeasyAPI.src.Services
                 throw new AppException("Nenhuma sala encontrada com o Id informado.");
             }
                 
-            if(request.TypeId != null)
+            if(request.TypeId.HasValue)
             {
-                result.RoomTypeId = Guid.Parse(request.TypeId);
+                result.RoomTypeId = request.TypeId.Value;
             }
 
-            if( request.Capacity != null )
+            if( request.Capacity.HasValue)
             {
-                result.Capacity = (int)request.Capacity;
+                result.Capacity = request.Capacity.Value;
             }
 
             if(!string.IsNullOrEmpty(request.Name))

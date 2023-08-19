@@ -27,7 +27,7 @@ namespace TimeasyAPI.src.Services
         {
             try
             {
-                var instituteId = Guid.Parse(request.InstituteId);
+                var instituteId = request.InstituteId;
                 var institute = await _instituteRepository.GetByIdAsync(instituteId);
 
                 if (institute == null)

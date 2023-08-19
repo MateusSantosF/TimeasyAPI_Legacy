@@ -5,7 +5,7 @@ namespace TimeasyAPI.src.DTOs.Teacher.Requests
     public class UpdateTeacherRequest
     {
         [Required]
-        public string TeacherId { get; set; }
+        public Guid TeacherId { get; set; }
 
         public string? Registration { get; set; }
 

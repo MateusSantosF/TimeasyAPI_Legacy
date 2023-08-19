@@ -12,7 +12,7 @@ namespace TimeasyAPI.src.Mappings
         {
             return new RoomDTO
             {
-                Id = room.Id.ToString(),
+                Id = room.Id,
                 Name = room.Name,
                 Block = room.Block,
                 Capacity = room.Capacity,
@@ -27,7 +27,7 @@ namespace TimeasyAPI.src.Mappings
                 Name = room.Name,
                 Block = room.Block,
                 Capacity = room.Capacity,
-                RoomTypeId = Guid.Parse(room.TypeId)
+                RoomTypeId = room.TypeId
             };
         }
 

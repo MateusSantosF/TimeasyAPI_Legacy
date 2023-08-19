@@ -5,7 +5,7 @@ namespace TimeasyAPI.src.DTOs.Institute.Request
     public class UpdateInstituteRequest
     {
         [Required(ErrorMessage = "InstituteId is required.")]
-        public string InstituteId { get; set; } 
+        public Guid InstituteId { get; set; } 
 
         [Required(ErrorMessage = "InstituteName is required.")]
         [MaxLength(100, ErrorMessage = "InstituteName must be at most 100 characters.")]

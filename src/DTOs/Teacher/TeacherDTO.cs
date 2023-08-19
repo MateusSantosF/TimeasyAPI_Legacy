@@ -2,8 +2,8 @@
 {
     public class TeacherDTO
     {
-        public string Id { get; set; }
-        public string InstituteId { get; set; }
+        public Guid Id { get; set; }
+        public Guid InstituteId { get; set; }
         public string Registration { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }

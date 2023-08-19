@@ -15,7 +15,7 @@ namespace TimeasyAPI.src.Mappings
                 Acronym = subject.Acronym,
                 Name = subject.Name,
                 Complexity = Enum.Parse<SubjectComplexity>(subject.Complexity, true),
-                RoomTypeId = Guid.Parse(subject.RoomTypeId)
+                RoomTypeId = subject.RoomTypeId
             };
         }
 
@@ -25,7 +25,7 @@ namespace TimeasyAPI.src.Mappings
             {
                 return new SubjectDTO()
                 {
-                    Id = subject.Id.ToString(),
+                    Id = subject.Id,
                     Acronym = subject.Acronym,
                     Name = subject.Name,
                     Complexity = subject.Complexity.ToString(),

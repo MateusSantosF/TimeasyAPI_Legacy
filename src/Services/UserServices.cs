@@ -37,9 +37,14 @@ namespace TimeasyAPI.src.Services
                 {
                     throw new AppException("Email informado já está sendo utilizado.");
                 }
+
+                if (!request.Password.Equals(request.ConfirmPassword))
+                {
+                    throw new AppException("As senhas não conferem.");
+                }
     
                 var createUserRequest = request.MapToEntity();
-                createUserRequest.AcessLevel = AcessLevel.Administrator;
+                createUserRequest.AcessLevel = AcessLevel.Root;
 
                 _unitOfWork.CreateTransaction();
                 await _userRepository.CreateAsync(createUserRequest);
