@@ -35,7 +35,7 @@ namespace TimeasyAPI.Controllers
             {
                 return BadRequest(GetModelErrors());
             }
-
+        
             return Ok(await _userService.AuthAsync(request));
         }
 

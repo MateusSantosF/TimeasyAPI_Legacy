@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using TimeasyAPI.src.Repositories;
+﻿using TimeasyAPI.src.Repositories;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services;
 using TimeasyAPI.src.Services.Interfaces;
@@ -23,6 +22,8 @@ namespace TimeasyAPI.src.Helpers
             serviceCollection.AddScoped<IIntervalServices, IntervalServices>();
             serviceCollection.AddScoped<ISubjectService, SubjectServices>();
             serviceCollection.AddScoped<ISubjectRepository, SubjectRepository>();
+            serviceCollection.AddScoped<ITeacherRepository, TeacherRepository>();
+            serviceCollection.AddScoped<ITeacherServices, TeacherServices>();
         }
     }
 }

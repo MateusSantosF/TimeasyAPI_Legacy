@@ -1,11 +1,14 @@
-﻿using TimeasyAPI.src.DTOs.Room.Request;
-using TimeasyAPI.src.DTOs.Room;
+﻿using System.Security.Claims;
 using TimeasyAPI.src.Models.Core;
 
 namespace TimeasyAPI.src.Services.Interfaces
 {
     public interface ITokenService
     {
-        public string GenerateToken(User user);
+        string GenerateToken(User user);
+
+        string GetInstituteIdByCurrentUser(ClaimsPrincipal user);
+
+        string GetUserIdByCurrentUser(ClaimsPrincipal user);
     }
 }

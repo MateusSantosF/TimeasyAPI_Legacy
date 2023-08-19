@@ -4,7 +4,6 @@ namespace TimeasyAPI.src.Helpers
 {
     public static class StringExtensions
     {
-
         public static Guid TryGetIdByString(this string id)
         {
 

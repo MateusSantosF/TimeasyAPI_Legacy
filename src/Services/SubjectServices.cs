@@ -73,7 +73,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao deletar Subject");
                 _unitOfWork.Rollback();
-                throw new AppException("Erro ao delete disciplina.");
+                throw new AppException("Erro ao deletar disciplina.");
             }
         }
 

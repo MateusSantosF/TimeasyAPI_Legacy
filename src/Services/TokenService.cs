@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.Models.Core;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Services.Interfaces;
@@ -14,8 +15,35 @@ namespace TimeasyAPI.src.Services
 
         private readonly AppSettings _settings;
 
+        private readonly string INSTITUTE_ID_KEY = "InstituteId";
+        private readonly string USER_ID_KEY = "UserId";
+
         public TokenService(IOptions<AppSettings> settings) {
             _settings = settings.Value;
+        }
+
+        public string GetInstituteIdByCurrentUser(ClaimsPrincipal user)
+        {
+            var instituteId = user.Claims.FirstOrDefault(c => c.Type == INSTITUTE_ID_KEY);
+
+            if (instituteId == null)
+            {
+                throw new AppException("Usuário inválido");
+            }
+
+            return instituteId.Value;
+        }
+
+        public string GetUserIdByCurrentUser(ClaimsPrincipal user)
+        {
+            var userId = user.Claims.FirstOrDefault(c => c.Type == USER_ID_KEY);
+
+            if (userId == null)
+            {
+                throw new AppException("Usuário inválido");
+            }
+
+            return userId.Value;
         }
 
         public string GenerateToken(User user)
@@ -27,7 +55,9 @@ namespace TimeasyAPI.src.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.FullName.ToString()),
-                    new Claim(ClaimTypes.Role, user.AcessLevel.ToString())
+                    new Claim(ClaimTypes.Role, user.AcessLevel.ToString()),
+                    new Claim(USER_ID_KEY, user.Id.ToString()),
+                    new Claim(INSTITUTE_ID_KEY, user.InstituteId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(_settings.TokenConfiguration.ExpirationHours),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
