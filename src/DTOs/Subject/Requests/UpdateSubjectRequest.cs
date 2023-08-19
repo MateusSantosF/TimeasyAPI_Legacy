@@ -15,7 +15,7 @@ namespace TimeasyAPI.src.DTOs.Subject.Requests
         [MaxLength(100, ErrorMessage = "Name must be at most 100 characters.")]
         public string? Name { get; set; }
 
-        public SubjectComplexity? Complexity { get; set; }
+        public string? Complexity { get; set; }
 
         public string? RoomTypeId { get; set; }
     }

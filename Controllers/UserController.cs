@@ -14,6 +14,9 @@ namespace TimeasyAPI.Controllers
 
         private readonly IUserServices _userService;
 
+        /// <summary>
+        ///  Construtor do controller
+        /// </summary>
         public UserController(  IUserServices userService)
         {
             _userService = userService;
@@ -43,6 +46,7 @@ namespace TimeasyAPI.Controllers
         /// <param name="request"></param>
         /// <returns>Informações do novo usuário e instituição criados</returns>
         [HttpPost("create")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
         {

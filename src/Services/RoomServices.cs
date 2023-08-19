@@ -111,17 +111,17 @@ namespace TimeasyAPI.src.Services
                 result.RoomTypeId = Guid.Parse(request.TypeId);
             }
 
-            if( request.Capacity != null && request.Capacity > 0)
+            if( request.Capacity != null )
             {
                 result.Capacity = (int)request.Capacity;
             }
 
-            if(!string.IsNullOrEmpty(request.Name)  && request.Name.Length < 100)
+            if(!string.IsNullOrEmpty(request.Name))
             {
                 result.Name = request.Name;
             }
 
-            if( !string.IsNullOrEmpty(request.Block) && request.Block.Length < 50)
+            if( !string.IsNullOrEmpty(request.Block))
             {
                 result.Block = request.Block;
             }

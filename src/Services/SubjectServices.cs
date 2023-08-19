@@ -1,8 +1,11 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Subject;
 using TimeasyAPI.src.DTOs.Subject.Requests;
+using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Models.UI;
+using TimeasyAPI.src.Models.ValueObjects.Enums;
+using TimeasyAPI.src.Repositories;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
@@ -44,8 +47,7 @@ namespace TimeasyAPI.src.Services
 
             return subject.EntitieToMap();
         }
-
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteByIdAsync(Guid id)
         {
             var result = await _subjectRepository.GetByIdAsync(id);
 
@@ -76,11 +78,6 @@ namespace TimeasyAPI.src.Services
             }
         }
 
-        public Task DeleteByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<PagedResult<SubjectDTO>> GetAllAsync(int page, int pageSize)
         {
             var result = await _subjectRepository.GetAllWithRoomTypeAsync(page, pageSize);
@@ -101,9 +98,49 @@ namespace TimeasyAPI.src.Services
             return pagedResultDTO;
         }
 
-        public Task UpdateAsync(UpdateSubjectRequest request)
+        public async Task UpdateAsync(UpdateSubjectRequest request)
         {
-            throw new NotImplementedException();
+            var roomId = request.Id.TryGetIdByString();
+
+            var result = await _subjectRepository.GetByIdAsync(roomId);
+
+            if (result is null)
+            {
+                throw new AppException("Nenhuma disciplina encontrada com o Id informado.");
+            }
+
+            if (request.RoomTypeId != null)
+            {
+                result.RoomTypeId = Guid.Parse(request.RoomTypeId);
+            }
+
+            if (request.Acronym != null)
+            {
+                result.Acronym = request.Acronym;
+            }
+
+            if (!string.IsNullOrEmpty(request.Name))
+            {
+                result.Name = request.Name;
+            }
+
+            if (request.Complexity != null)
+            {
+                result.Complexity = Enum.Parse<SubjectComplexity>(request.Complexity, true);
+            }
+
+            try
+            {
+                _unitOfWork.CreateTransaction();
+                _subjectRepository.Update(result);
+                _unitOfWork.Commit();
+                await _unitOfWork.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                throw new DatabaseException("Um erro ocorreu durante a atualização.");
+            }
         }
     }
 }
