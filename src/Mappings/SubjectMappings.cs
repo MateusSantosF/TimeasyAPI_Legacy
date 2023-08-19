@@ -35,7 +35,7 @@ namespace TimeasyAPI.src.Mappings
 
             return new SubjectDTO()
             {
-                Id = subject.Id.ToString(),
+                Id = subject.Id,
                 Acronym = subject.Acronym,
                 Name = subject.Name,
                 Complexity = subject.Complexity.ToString(),
