@@ -24,7 +24,7 @@ namespace TimeasyAPI.Controllers
         /// Atualiza a instituição de ensino
         /// </summary>
         /// <param name="request">Propriedades da instituição a ser atualizada</param>
-        [HttpPut]
+        [HttpPatch]
         public async Task<IActionResult> Update([FromBody] UpdateInstituteRequest request)
         {
 

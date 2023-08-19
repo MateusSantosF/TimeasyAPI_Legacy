@@ -3,7 +3,9 @@ using TimeasyAPI.src.DTOs.Course.Requests;
 using TimeasyAPI.src.DTOs.Courses;
 using TimeasyAPI.src.DTOs.Room;
 using TimeasyAPI.src.Mappings;
+using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
+using TimeasyAPI.src.Models.ValueObjects;
 using TimeasyAPI.src.Repositories;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
@@ -96,33 +98,47 @@ namespace TimeasyAPI.src.Services
 
         }
 
-        public async Task RemoveCourseSubjectByIdAsync(Guid courseId, Guid subjectId)
+        public async Task RemoveCourseSubjectByIdAsync(DeleteCourseSubjectsRequest request)
         {
 
-            var course = await _courseRepository.GetByIdWithSubjectsAsync(courseId);
+            var course = await _courseRepository.GetByIdWithSubjectsAsync(request.CourseId);
 
             if(course == null)
             {
                 throw new  AppException("Não foi encontrado um curso com o Id informado");
             }
 
-            var subject = await _subjectRepository.GetByIdAsync(subjectId);
+            var subjects = await _subjectRepository.GetAllById(request.Subjects);
 
-            if (subject == null)
+            if (subjects == null)
             {
-                throw new AppException("Não foi encontrado nenhuma disciplina com o Id informado");
+                throw new AppException("Não foram encontradas  disciplinas com os Ids informados.");
             }
 
-            var subjectCourse = course.CourseSubject.Find(c => c.SubjectId.Equals(subjectId));
+            var allSubjectsBelongsCourse = subjects.All(s => course.CourseSubject.Any(cs => s.Id.Equals(cs.SubjectId)));
 
-            if (subjectCourse == null)
+            if (!allSubjectsBelongsCourse)
             {
-                throw new AppException("Disciplina informada não pertence ao curso.");
+                throw new AppException("Uma ou mais das disciplinas informadas não pertence ao curso.");
             }
+
+            if (course.CourseSubject.Count.Equals(subjects.Count))
+            {
+                throw new AppException("Um curso precisa ter no mínimo uma disciplina associada.");
+            }
+
+            var subjectsForRemove = subjects.Select(sb =>
+            {
+                return new CourseSubject
+                {
+                    SubjectId = sb.Id,
+                    CourseId = course.Id
+                };
+            }).ToList();
 
             try
             {
-                _courseRepository.RemoveCurseSubject(subjectCourse);
+                _courseRepository.RemoveCurseSubject(subjectsForRemove);
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)
@@ -132,9 +148,71 @@ namespace TimeasyAPI.src.Services
 
         }
 
-        public Task UpdateAsync(UpdateCourseRequest request)
+        public async Task UpdateAsync(UpdateCourseRequest request)
         {
-            throw new NotImplementedException();
+
+            var result = await _courseRepository.GetByIdWithSubjectsAsync(request.CourseId);
+
+            if(result == null)
+            {
+                throw new AppException("Nenhum curso foi encontrado com o Id informado.");
+            }
+
+            if(request.Name != null)
+            {
+                result.Name = request.Name;
+            }
+
+            if (request.Turn.HasValue)
+            {
+                result.Turn = request.Turn.Value;
+            }
+
+            if (request.Period.HasValue)
+            {
+                result.Period = request.Period.Value;
+            }
+
+            if(request.PeriodAmount.HasValue){
+
+                result.PeriodAmount = request.PeriodAmount.Value;
+            }
+
+            if (request.Subjects != null && request.Subjects.Any())
+            {
+
+                // Remove current subjects
+                _courseRepository.RemoveCurseSubject(result.CourseSubject);
+                result.CourseSubject.Clear();
+
+
+                var subjectsIds = request.Subjects.Select(s => s.SubjectId).ToList();
+                var subjects = await _subjectRepository.GetAllById(subjectsIds);
+       
+                var updatedCourseSubjects = subjects.Select(sb =>
+                {
+                    return new CourseSubject
+                    {
+                        SubjectId = sb.Id,
+                        CourseId = result.Id
+                    };
+                }).ToList();
+
+                result.CourseSubject.AddRange(updatedCourseSubjects);
+            }
+   
+            try
+            {
+                _unitOfWork.CreateTransaction();
+                _courseRepository.Update(result);
+                _unitOfWork.Commit();
+                await _unitOfWork.SaveChangesAsync();
+
+            }
+            catch (Exception)
+            {
+                throw new DatabaseException("Um erro ocorreu durante a atualização.");
+            }
         }
     }
 }

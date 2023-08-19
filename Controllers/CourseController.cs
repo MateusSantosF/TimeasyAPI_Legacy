@@ -49,6 +49,21 @@ namespace TimeasyAPI.Controllers
         }
 
         /// <summary>
+        /// Atualiza um Curso. Removendo todas suas disciplinas e adicionando novamente com base nas disciplinas informadas
+        /// </summary>
+        /// <param name="request">Informações do curso a serem alteradas</param>
+        [HttpPatch]
+        public async Task<IActionResult> CreateAsync([FromBody] UpdateCourseRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(GetModelErrors());
+            }
+            await _courseService.UpdateAsync(request);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Deleta um curso do sistema
         /// </summary>
         /// <param name="id">Id do curso a ser deletado</param>
@@ -67,9 +82,9 @@ namespace TimeasyAPI.Controllers
         /// <returns></returns>
         [HttpDelete("subject")]
         [ProducesResponseType((int)StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> DeleteCourseSubjectAsync(Guid courseId, Guid subjectId)
+        public async Task<IActionResult> DeleteCourseSubjectAsync([FromBody] DeleteCourseSubjectsRequest request)
         {
-            await _courseService.RemoveCourseSubjectByIdAsync(courseId, subjectId);
+            await _courseService.RemoveCourseSubjectByIdAsync(request);
             return NoContent();
         }
     }

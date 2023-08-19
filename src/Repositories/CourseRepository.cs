@@ -36,10 +36,12 @@ namespace TimeasyAPI.src.Repositories
                     .GetPagedAsync(page, pageSize);
         }
 
-        public void RemoveCurseSubject(CourseSubject courseSubject)
+        public void RemoveCurseSubject(List<CourseSubject> courseSubjects)
         {
-             _courseSubjects.Remove(courseSubject);
+             _courseSubjects.RemoveRange(courseSubjects);
         }
+
+
 
         public async Task<Course> GetByIdWithSubjectsAsync(Guid courseId)
         {
