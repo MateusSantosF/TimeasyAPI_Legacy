@@ -84,7 +84,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao deletar RoomType");
                 _unitOfWork.Rollback();
-                throw new AppException("Erro ao criar tipo sala.");
+                throw new AppException("Erro ao deletar tipo sala.");
             }
         
         }

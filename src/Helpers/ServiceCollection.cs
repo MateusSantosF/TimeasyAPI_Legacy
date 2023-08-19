@@ -1,4 +1,5 @@
-﻿using TimeasyAPI.src.Repositories;
+﻿using System.Reflection;
+using TimeasyAPI.src.Repositories;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services;
 using TimeasyAPI.src.Services.Interfaces;
@@ -9,6 +10,8 @@ namespace TimeasyAPI.src.Helpers
     public static class ServiceCollection
     {
         public static void RegisterDependencies(this IServiceCollection serviceCollection) {
+
+
             serviceCollection.AddScoped<ITokenService, TokenService>();
             serviceCollection.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             serviceCollection.AddScoped<IUnitOfWork,UnitOfWork.UnitOfWork>();
@@ -20,6 +23,8 @@ namespace TimeasyAPI.src.Helpers
             serviceCollection.AddScoped<IIntervalRepository, IntervalRepository>();
             serviceCollection.AddScoped<IInstituteRepository, InstituteRepository>();
             serviceCollection.AddScoped<IIntervalServices, IntervalServices>();
+            serviceCollection.AddScoped<ISubjectService, SubjectServices>();
+            serviceCollection.AddScoped<ISubjectRepository, SubjectRepository>();
         }
     }
 }

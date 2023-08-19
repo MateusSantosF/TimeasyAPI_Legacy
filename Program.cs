@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
+using System.Reflection;
 using System.Text;
 using TimeasyAPI.Controllers.Middlewares;
 using TimeasyAPI.src.Data;
@@ -27,6 +28,10 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer",
         Name = "Authorization",
     });
+
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
