@@ -19,6 +19,8 @@ namespace TimeasyAPI.src.Data.Mappings
                .HasOne(s => s.Course)
                .WithMany(tc => tc.CourseSubject)
                .HasForeignKey(s => s.CourseId);
+
+
         }
     }
 }

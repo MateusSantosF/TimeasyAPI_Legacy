@@ -28,5 +28,10 @@ namespace TimeasyAPI.src.Repositories
                                  .Where(r => r.Active == true)
                                  .GetPagedAsync(page, pageSize);
         }
+
+        public async Task<List<Room>> GetAllRoomsById(List<Guid> roomsId)
+        {
+            return await _entitie.AsNoTracking().Where(s => roomsId.Contains(s.Id)).ToListAsync();
+        }
     }
 }

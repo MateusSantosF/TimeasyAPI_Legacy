@@ -36,6 +36,12 @@ namespace TimeasyAPI.src.Repositories
                     .GetPagedAsync(page, pageSize);
         }
 
+
+        public async Task<List<Course>> GetAllCoursesById(List<Guid> coursesIds)
+        {
+            return await _entitie.AsNoTracking().Where(s => coursesIds.Contains(s.Id)).ToListAsync();
+        }
+
         public void RemoveCurseSubject(List<CourseSubject> courseSubjects)
         {
              _courseSubjects.RemoveRange(courseSubjects);

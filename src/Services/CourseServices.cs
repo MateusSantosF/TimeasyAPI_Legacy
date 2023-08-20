@@ -1,12 +1,9 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Course.Requests;
 using TimeasyAPI.src.DTOs.Courses;
-using TimeasyAPI.src.DTOs.Room;
 using TimeasyAPI.src.Mappings;
-using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects;
-using TimeasyAPI.src.Repositories;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
@@ -34,6 +31,13 @@ namespace TimeasyAPI.src.Services
         {
             var course = request.MapToEntitie();
             course.InstituteId = instituteId;
+
+            var validPeriodAmount = course.CourseSubject.All(s => s.Period <= course.PeriodAmount);
+
+            if (!validPeriodAmount)
+            {
+                throw new AppException("Uma ou mais disciplinas possuem o perido, maior que o perido do curso.");
+            }
 
             try
             {
@@ -70,6 +74,7 @@ namespace TimeasyAPI.src.Services
 
             return pagedResultDTO;
         }
+
 
         public async Task RemoveByIdAsync(Guid id)
         {

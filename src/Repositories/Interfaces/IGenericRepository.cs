@@ -11,7 +11,11 @@ namespace TimeasyAPI.src.Repositories.Interfaces
 
         public void Update(T entity);
 
-        public void Delete(T entity);   
+        public void Delete(T entity);
+
+        public void Attach(T entity);
+
+        public void Attach(IEnumerable<T> entities);
 
         public Task<T> GetByIdAsync(Guid id);
 

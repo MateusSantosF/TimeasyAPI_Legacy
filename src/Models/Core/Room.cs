@@ -9,7 +9,7 @@
         public RoomType Type { get; set; }
 
         // EF Relations
-        public ICollection<Timetable> Timetables { get; set; } 
+        public List<Timetable> Timetables { get; } = new();
         public Guid RoomTypeId { get; set; }
     }
 }

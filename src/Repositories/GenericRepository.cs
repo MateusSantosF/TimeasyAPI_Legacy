@@ -38,6 +38,16 @@ namespace TimeasyAPI.src.Repositories
             }
         }
 
+        public void Attach(T entity)
+        {
+            _entitie.Attach(entity);
+        }
+
+        public void Attach(IEnumerable<T> entities)
+        {
+            _entitie.AttachRange(entities);
+        }
+
         public void Delete(T entity)
         {
             _entitie.Remove(entity); 

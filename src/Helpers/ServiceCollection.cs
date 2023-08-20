@@ -9,6 +9,7 @@ namespace TimeasyAPI.src.Helpers
     public static class ServiceCollection
     {
         public static void RegisterDependencies(this IServiceCollection serviceCollection) {
+
             serviceCollection.AddScoped<ITokenService, TokenService>();
             serviceCollection.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             serviceCollection.AddScoped<IUnitOfWork,UnitOfWork.UnitOfWork>();
@@ -32,6 +33,9 @@ namespace TimeasyAPI.src.Helpers
 
             serviceCollection.AddScoped<ICourseRepository, CourseRepository>();
             serviceCollection.AddScoped<ICourseServices, CourseServices>();
+
+            serviceCollection.AddScoped<ITimetableRepository, TimetableRepository>();
+            serviceCollection.AddScoped<ITimetableServices, TimetableServices>();
 
         }
     }

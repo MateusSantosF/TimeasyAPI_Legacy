@@ -25,6 +25,7 @@ namespace TimeasyAPI.src.Mappings
                 {
                     SubjectId = s.SubjectId,
                     CourseId = newCourse.Id,
+                    Period = s.Period,
                     WeeklyClassCount = s.WeeklyClassCount
                 };
             }).ToList();
@@ -43,7 +44,8 @@ namespace TimeasyAPI.src.Mappings
                 {
                     SubjectId = s.SubjectId,
                     SubjectName = s.Subject != null ? s.Subject.Name : string.Empty,
-                    WeeklyClassCount = s.WeeklyClassCount
+                    WeeklyClassCount = s.WeeklyClassCount,
+                    Period = s.Period
                 };
             }).ToList();
 

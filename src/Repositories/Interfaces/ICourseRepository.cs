@@ -10,6 +10,8 @@ namespace TimeasyAPI.src.Repositories.Interfaces
 
         Task<Course> GetByIdWithSubjectsAsync(Guid courseId);
 
+        Task<List<Course>> GetAllCoursesById(List<Guid> coursesIds);
+
         void RemoveCurseSubject(List<CourseSubject> courseSubject);
     }
 }

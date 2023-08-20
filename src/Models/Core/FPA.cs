@@ -1,4 +1,5 @@
 ﻿using TimeasyAPI.src.Helpers;
+using TimeasyAPI.src.Models.Core;
 using TimeasyAPI.src.Models.ValueObjects.Enums;
 
 namespace TimeasyAPI.src.Models
@@ -11,7 +12,7 @@ namespace TimeasyAPI.src.Models
         }
         public string Code { get; set; }
         public FPAStatus Status { get; set; }
-        public List<Interval> Schedules { get; set; }
+        public List<Schedule> Schedules { get; set; }
 
         //EF Relations
         public ICollection<Subject> Subjects { get; set; }

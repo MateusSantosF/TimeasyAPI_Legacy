@@ -16,6 +16,11 @@ namespace TimeasyAPI.src.Data.Mappings
                 .HasForeignKey(s => s.SubjectId);
 
             builder
+                .HasOne(s => s.Course)
+                .WithMany(c => c.TimetableSubjects)
+                .HasForeignKey(s => s.CourseId);
+
+            builder
                 .HasOne(t => t.Timetable)
                 .WithMany(tc => tc.TimetableSubjects)
                 .HasForeignKey(t => t.TimetableId);

@@ -15,6 +15,7 @@ namespace TimeasyAPI.src.Data.Mappings
 
             builder.HasIndex(room => room.Name).IsUnique();
 
+
             builder
                 .HasMany(r => r.Timetables)
                 .WithMany(t => t.Rooms);
