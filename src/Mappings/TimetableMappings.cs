@@ -42,15 +42,15 @@ namespace TimeasyAPI.src.Mappings
                 };
             });
 
-            //var timetableRooms = timetable.Rooms.Select(roomId =>
-            //{
-            //    return new Room
-            //    {
-            //        Id = roomId
-            //    };
-            //});
+            var timetablerooms = timetable.Rooms.Select(roomid =>
+            {
+                return new Room
+                {
+                    Id = roomid
+                };
+            });
 
-            //newTimetable.Rooms.AddRange(timetableRooms);
+            newTimetable.Rooms.AddRange(timetablerooms);
             newTimetable.TimetableSubjects.AddRange(timetableSubjects);
             newTimetable.TimetableCourses.AddRange(timetableCourses);
 
@@ -59,47 +59,13 @@ namespace TimeasyAPI.src.Mappings
 
         public static TimetableDTO EntitieToMap(this Timetable timetable)
         {
-
-            var courses = timetable.TimetableCourses.Select(c =>
-            {
-                return new TimetableCourseDTO
-                {
-                    CourseId = c.CourseId,
-                    CourseOperatingDays = new WeekdayAvailability
-                    {
-                        Monday = c.Monday,
-                        Tuesday = c.Tuesday,
-                        Wednesday = c.Wednesday,
-                        Thursday = c.Thursday,
-                        Friday = c.Friday,
-                        Saturday = c.Saturday,
-                    }
-                };
-            });
-
-            var rooms = timetable.Rooms.Select(room =>
-            {
-                return room.Id;
-            });
-
-            var subjects = timetable.TimetableSubjects.Select(s =>
-            {
-                return new TimetableSubjectDTO
-                {
-                    SubjectId = s.SubjectId,
-                    CourseId = s.CourseId,
-                };
-            });
-
             return new TimetableDTO
             {
                 Id = timetable.Id,
                 Name = timetable.Name,
                 Status = timetable.Status,
                 EndedAt = timetable.EndedAt.HasValue ? timetable.EndedAt.Value : null,
-                CreateAt = timetable.CreateAt,
-                Courses = courses,
-                Subjects = subjects,
+                CreateAt = timetable.CreateAt
             };
         }
 
