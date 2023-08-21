@@ -1,7 +1,6 @@
 ﻿using TimeasyAPI.src.DTOs.Room;
 using TimeasyAPI.src.DTOs.Room.Request;
 using TimeasyAPI.src.Models;
-using TimeasyAPI.src.Models.UI;
 
 namespace TimeasyAPI.src.Mappings
 {
@@ -16,9 +15,10 @@ namespace TimeasyAPI.src.Mappings
                 Name = room.Name,
                 Block = room.Block,
                 Capacity = room.Capacity,
-                Type = room?.Type.Name
+                Type = room.Type.Name
             };
         }
+
 
         public static Room MapToEntitie(this CreateRoomRequest room)
         {

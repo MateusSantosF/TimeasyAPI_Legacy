@@ -42,6 +42,7 @@ namespace TimeasyAPI.src.Repositories
             return await _entitie
                         .Where(t => t.Id.Equals(timetableId))
                         .Include(t => t.TimetableCourses)
+                            .ThenInclude(tc => tc.Course)
                         .AsNoTracking()
                         .FirstOrDefaultAsync();
         }
@@ -51,6 +52,7 @@ namespace TimeasyAPI.src.Repositories
             return await _entitie
                         .Where(t => t.Id.Equals(timetableId))
                         .Include(t => t.TimetableSubjects)
+                            .ThenInclude( ts => ts.Subject)
                         .AsNoTracking()
                         .FirstOrDefaultAsync();
         }
@@ -60,6 +62,7 @@ namespace TimeasyAPI.src.Repositories
             return await _entitie
                         .Where(t => t.Id.Equals(timetableId))
                         .Include(t => t.Rooms)
+                            .ThenInclude(r => r.Type)
                         .AsNoTracking()
                         .FirstOrDefaultAsync();
         }

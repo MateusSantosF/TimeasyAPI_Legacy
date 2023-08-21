@@ -18,11 +18,46 @@ namespace TimeasyAPI.Controllers
             _tokenService = tokenService;
         }
 
+        [HttpGet("rooms")]
+        public async Task<IActionResult> GetTimetableRooms(Guid timetableId)
+        {
+            return Ok(await _timetableServices.GetTimetableRooms(timetableId));
+        }
+
+        [HttpGet("subjects")]
+        public async Task<IActionResult> GetTimetableSubjects(Guid timetableId)
+        {
+            return Ok(await _timetableServices.GetTimetableSubjects(timetableId));
+        }
+
+
+        [HttpGet("courses")]
+        public async Task<IActionResult> GetTimetableCourses(Guid timetableId)
+        {
+            return Ok(await _timetableServices.GetTimetableCourses(timetableId));
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAllPagedAsync(int page = 1, int pageSize = 10)
         {
             return Ok(await _timetableServices.GetAllAsync(page, pageSize));
+        }
+
+        [HttpDelete("subject")]
+        public async Task<IActionResult> RemoveSubjectFromTimetable(Guid timetableId, Guid subjectId)
+        {
+
+            await _timetableServices.RemoveSubjectFromTimetable(timetableId, subjectId);
+           return NoContent();
+        }
+
+
+        [HttpDelete("course")]
+        public async Task<IActionResult> RemoveCoursetFromTimetable(Guid timetableId, Guid courseId)
+        {
+            await _timetableServices.RemoveCourseFromTimetable(timetableId, courseId);
+            return NoContent();
         }
 
         [HttpPost]

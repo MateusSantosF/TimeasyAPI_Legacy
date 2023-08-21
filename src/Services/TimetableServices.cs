@@ -1,5 +1,7 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
+using TimeasyAPI.src.DTOs.Courses;
 using TimeasyAPI.src.DTOs.Room;
+using TimeasyAPI.src.DTOs.Subject;
 using TimeasyAPI.src.DTOs.Teacher.Requests;
 using TimeasyAPI.src.DTOs.Timetable;
 using TimeasyAPI.src.DTOs.Timetable.Requests;
@@ -134,6 +136,39 @@ namespace TimeasyAPI.src.Services
                 return r.EntitieToMap();
             }).ToList();    
         }
+
+        public async Task<List<SubjectDTO>> GetTimetableSubjects(Guid timetableId)
+        {
+
+            var result = await _timetableRepository.GetTimetableSubjectsAsync(timetableId);
+
+            if (result == null)
+            {
+                throw new AppException(ErrorMessages.TimetableNotFound);
+            }
+
+            return result.TimetableSubjects.Select(r =>
+            {
+                return r.Subject.EntitieToMap();
+            }).ToList();
+        }
+
+        public async Task<List<CourseDTO>> GetTimetableCourses(Guid timetableId)
+        {
+
+            var result = await _timetableRepository.GetTimetableCoursesAsync(timetableId);
+
+            if (result == null)
+            {
+                throw new AppException(ErrorMessages.TimetableNotFound);
+            }
+
+            return result.TimetableCourses.Select(r =>
+            {
+                return r.Course.EntitieToMap();
+            }).ToList();
+        }
+
 
 
         public async Task RemoveCourseFromTimetable(Guid timetableId, Guid courseId)
