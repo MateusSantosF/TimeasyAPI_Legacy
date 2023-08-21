@@ -29,7 +29,7 @@ namespace TimeasyAPI.src.Services
         {
             if(request.IsComputerLab && request.OperationalSystem == null)
             {
-                throw new AppException("O sistema operacional do laboratório é obrigatorio.");
+                throw new AppException(ErrorMessages.ComputerLabMissingOS);
             }
 
             var newRoomType = request.MapToEntitie();
@@ -50,7 +50,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao criar RoomType {ex.Message}. ${ex.StackTrace}");
                 _unitOfWork.Rollback();
-                throw new AppException("Erro ao criar tipo sala.");
+                throw new AppException(ErrorMessages.CreateRoomTypeError);
 
             }
 
@@ -63,7 +63,7 @@ namespace TimeasyAPI.src.Services
             
             if(result is null)
             {
-                throw new AppException("Tipo de sala não encontrado.");
+                throw new AppException(ErrorMessages.RoomTypeNotFound);
             }
 
             if(!result.Active)
@@ -84,7 +84,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao deletar RoomType");
                 _unitOfWork.Rollback();
-                throw new AppException("Erro ao deletar tipo sala.");
+                throw new AppException(ErrorMessages.DeleteRoomTypeError);
             }
         
         }
@@ -112,22 +112,17 @@ namespace TimeasyAPI.src.Services
         public async Task UpdateAsync(UpdateRoomTypeRequest request)
         {
 
-            var roomTypeId = request.Id;
 
-            var result = await _roomTypeRepository.GetByIdAsync(roomTypeId);
+            var result = await _roomTypeRepository.GetByIdAsync(request.Id);
 
             if(result == null)
             {
-                throw new AppException("Tipo de sala não encontrado.");
+                throw new AppException(ErrorMessages.RoomTypeNotFound);
             }
 
             if (!string.IsNullOrEmpty(request.Name))
             {
                 result.Name = request.Name;
-            }
-
-            if(!string.IsNullOrEmpty(request.OperationalSystem))
-            {
             }
 
  
@@ -137,7 +132,7 @@ namespace TimeasyAPI.src.Services
                 
                 if(isLab && request.OperationalSystem == null)
                 {
-                    throw new AppException("OperationalSystem is required.");
+                    throw new AppException(ErrorMessages.ComputerLabMissingOS);
                 }
 
                 if (request.OperationalSystem != null && isLab)
@@ -162,7 +157,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao atualizar RoomType");
                 _unitOfWork.Rollback();
-                throw new AppException("Erro ao atualizar tipo sala.");
+                throw new AppException(ErrorMessages.UpdateRoomTypeError);
             }
 
         }

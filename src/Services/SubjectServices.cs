@@ -41,7 +41,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao criar Disciplina ${ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao criar Disciplina");
+                throw new DatabaseException(ErrorMessages.DeleteSubjectError);
             }
 
             return subject.EntitieToMap();
@@ -52,7 +52,7 @@ namespace TimeasyAPI.src.Services
 
             if (result is null)
             {
-                throw new AppException("Disciplina não encontrada.");
+                throw new AppException(ErrorMessages.SubjectNotFound);
             }
 
             if (!result.Active)
@@ -73,7 +73,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao deletar Subject");
                 _unitOfWork.Rollback();
-                throw new AppException("Erro ao deletar disciplina.");
+                throw new AppException(ErrorMessages.DeleteSubjectError);
             }
         }
 
@@ -105,7 +105,7 @@ namespace TimeasyAPI.src.Services
 
             if (result is null)
             {
-                throw new AppException("Nenhuma disciplina encontrada com o Id informado.");
+                throw new AppException(ErrorMessages.SubjectNotFound);
             }
 
             if (request.RoomTypeId != null)
@@ -138,7 +138,7 @@ namespace TimeasyAPI.src.Services
             }
             catch (Exception)
             {
-                throw new DatabaseException("Um erro ocorreu durante a atualização.");
+                throw new DatabaseException(ErrorMessages.UpdateSubjectError);
             }
         }
     }

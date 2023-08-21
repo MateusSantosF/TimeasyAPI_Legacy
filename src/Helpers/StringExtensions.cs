@@ -9,7 +9,7 @@ namespace TimeasyAPI.src.Helpers
 
             if (!Guid.TryParse(id, out Guid entitieId))
             {
-                throw new AppException("Id inválido");
+                throw new AppException(ErrorMessages.InvalidIdFormat);
             }
 
             return entitieId;

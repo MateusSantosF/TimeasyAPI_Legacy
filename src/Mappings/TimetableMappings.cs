@@ -38,7 +38,9 @@ namespace TimeasyAPI.src.Mappings
                 {
                     StudentsCount = s.StudentsCount,
                     SubjectId = s.SubjectId,
-                    TimetableId = newTimetable.Id
+                    TimetableId = newTimetable.Id,
+                    CourseId = s.CourseId
+                    
                 };
             });
 

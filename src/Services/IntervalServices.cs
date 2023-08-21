@@ -1,5 +1,6 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Institute.Request;
+using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
@@ -32,7 +33,7 @@ namespace TimeasyAPI.src.Services
 
                 if (institute == null)
                 {
-                    throw new AppException("Não foi encontrado nenhum instituto com o Id informado.");
+                    throw new AppException(ErrorMessages.InstituteNotFound);
                 }
 
                 var intervals = request.Intervals.Select(i =>
@@ -48,19 +49,11 @@ namespace TimeasyAPI.src.Services
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
             }
-            catch (FormatException)
-            {
-                throw new AppException("Id inválido");
-            }
-            catch (AppException)
-            {
-                throw;
-            }
             catch (Exception ex)
             {
                 _logger.Error($"Erro ao adicionar intervalos ${ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao adicionar intervalos. {ex.Message}");
+                throw new DatabaseException(ErrorMessages.AddIntervalsError);
             }
         }
 
@@ -68,12 +61,12 @@ namespace TimeasyAPI.src.Services
         {
             try
             {
-                var intervalId = Guid.Parse(id);
+                var intervalId = id.TryGetIdByString();
                 var interval = await _intervalRepository.GetByIdAsync(intervalId);
 
                 if (interval == null)
                 {
-                    throw new AppException("Não foi encontrado nenhum intervalo com o Id informado.");
+                    throw new AppException(ErrorMessages.IntervalNotFound);
                 }
 
                 if (!interval.Active)
@@ -88,10 +81,6 @@ namespace TimeasyAPI.src.Services
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
             }
-            catch (FormatException)
-            {
-                throw new AppException("Id inválido");
-            }
             catch (AppException)
             {
                 throw;
@@ -100,7 +89,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao deletar intervalo. ${ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao deletar intervalo. {ex.Message}");
+                throw new DatabaseException(ErrorMessages.DeleteIntervalError);
             }
         }
     }

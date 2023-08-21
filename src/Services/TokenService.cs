@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TimeasyAPI.Controllers.Middlewares.Exceptions;
+using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Models.Core;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Services.Interfaces;
@@ -28,7 +29,7 @@ namespace TimeasyAPI.src.Services
 
             if (instituteId == null)
             {
-                throw new AppException("Usuário inválido");
+                throw new AppException(ErrorMessages.InvalidUserError);
             }
 
             return Guid.Parse(instituteId.Value);
@@ -40,7 +41,7 @@ namespace TimeasyAPI.src.Services
 
             if (userId == null)
             {
-                throw new AppException("Usuário inválido");
+                throw new AppException(ErrorMessages.InvalidUserError);
             }
 
             return Guid.Parse(userId.Value);

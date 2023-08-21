@@ -1,6 +1,7 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Institute;
 using TimeasyAPI.src.DTOs.Institute.Request;
+using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
@@ -31,9 +32,9 @@ namespace TimeasyAPI.src.Services
                 var instituteId = request.InstituteId;
                 var institute = await _instituteRepository.GetByIdAsync(instituteId);
 
-                if(institute == null)
+                if (institute == null)
                 {
-                    throw new AppException("Não foi encontrado nenhum instituto com o Id informado.");
+                    throw new AppException(ErrorMessages.InstituteNotFound);
                 }
 
                 var intervals = request.Intervals.Select(i =>
@@ -42,16 +43,15 @@ namespace TimeasyAPI.src.Services
                     interval.InstituteId = instituteId;
                     return interval;
                 }).ToList();
-            
 
                 _unitOfWork.CreateTransaction();
                 await _intervalRepository.AddRange(intervals);
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
             }
-            catch(FormatException)
+            catch (FormatException)
             {
-                throw new AppException("Id inválido");
+                throw new AppException(ErrorMessages.InvalidIdFormat);
             }
             catch (AppException)
             {
@@ -59,11 +59,10 @@ namespace TimeasyAPI.src.Services
             }
             catch (Exception ex)
             {
-                _logger.Error($"Erro ao adicionar intervalos ${ex.Message}");
+                _logger.Error($"Error while adding intervals: {ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao atualizar instituto. {ex.Message}");
+                throw new DatabaseException(ErrorMessages.AddIntervalsError);
             }
-
         }
 
         public async Task<InstituteDTO> GetById(string id)
@@ -75,14 +74,14 @@ namespace TimeasyAPI.src.Services
 
                 if (institute == null)
                 {
-                    throw new AppException("Não foi encontrado nenhum instituto com o Id informado.");
+                    throw new AppException(ErrorMessages.InstituteNotFound);
                 }
 
                 return institute.EntitieToMap();
             }
             catch (FormatException)
             {
-                throw new AppException("Id inválido");
+                throw new AppException(ErrorMessages.InvalidIdFormat);
             }
             catch (AppException)
             {
@@ -90,30 +89,29 @@ namespace TimeasyAPI.src.Services
             }
             catch (Exception ex)
             {
-                _logger.Error($"Erro ao buscar instituto. ${ex.Message}");
+                _logger.Error($"Error while retrieving institute: {ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao buscar instituto. {ex.Message}");
+                throw new DatabaseException($"Error while retrieving institute: {ex.Message}");
             }
         }
 
         public async Task UpdateAsync(UpdateInstituteRequest request)
         {
-
-            // TODO verificar se a instituição que está sendo atualizada é mesmo do usuario que fez a request
+            // TODO: verificar se a instituição que está sendo atualizada é do usuário que fez a request
 
             try
             {
                 var updatedInstitute = request.MapToEntitie();
                 _unitOfWork.CreateTransaction();
-                 _instituteRepository.Update(updatedInstitute);
+                _instituteRepository.Update(updatedInstitute);
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
             }
-            catch(Exception ex)
-            {          
-                _logger.Error($"Erro ao atualizar instituto ${ex.Message}");
+            catch (Exception ex)
+            {
+                _logger.Error($"Error while updating institute: {ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao atualizar instituto {ex.Message}");
+                throw new DatabaseException(ErrorMessages.UpdateInstituteError);
             }
         }
     }

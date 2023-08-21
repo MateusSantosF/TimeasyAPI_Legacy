@@ -1,6 +1,7 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Teacher;
 using TimeasyAPI.src.DTOs.Teacher.Requests;
+using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects.Enums;
@@ -40,7 +41,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao criar Professor");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao criar Professor");
+                throw new DatabaseException(ErrorMessages.CreateTeacherError);
             }
 
             return subject.EntitieToMap();
@@ -73,7 +74,7 @@ namespace TimeasyAPI.src.Services
 
             if (result is null)
             {
-                throw new AppException("Professor não encontrado.");
+                throw new AppException(ErrorMessages.TeacherNotFound);
             }
 
             if (!result.Active)
@@ -94,7 +95,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao deletar Teacher");
                 _unitOfWork.Rollback();
-                throw new AppException("Erro ao deletar Professor.");
+                throw new AppException(ErrorMessages.DeleteTeacherError);
             }
         }
 
@@ -107,7 +108,7 @@ namespace TimeasyAPI.src.Services
 
             if(teacher == null)
             {
-                throw new AppException("Nenhum professor encontrado com o Id informado.");
+                throw new AppException(ErrorMessages.TeacherNotFound);
             }
 
             if (request.FullName != null)
@@ -160,7 +161,7 @@ namespace TimeasyAPI.src.Services
             }
             catch (Exception)
             {
-                throw new DatabaseException("Um erro ocorreu durante a atualização.");
+                throw new DatabaseException(ErrorMessages.UpdateTeacherError);
             }
         }
     }

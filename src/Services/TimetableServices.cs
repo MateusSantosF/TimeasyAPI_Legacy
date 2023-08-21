@@ -15,8 +15,6 @@ namespace TimeasyAPI.src.Services
 {
     public class TimetableServices : ITimetableServices
     {
-
-
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITimetableRepository _timetableRepository;
         private readonly ISubjectRepository _subjectRepository;
@@ -46,13 +44,9 @@ namespace TimeasyAPI.src.Services
             newTimetable.Status = TimetableStatus.ANALYSE;
             newTimetable.CreateAt = GetCurrentDate();
 
-
-
-        
-
             try
             {
-                _timetableRepository.Attach(newTimetable);
+         
                 _roomRepository.Attach(newTimetable.Rooms);
                 _unitOfWork.CreateTransaction();
                 var result = await _timetableRepository.CreateAsync(newTimetable);
@@ -63,18 +57,9 @@ namespace TimeasyAPI.src.Services
             }catch(Exception ex){
                 _unitOfWork.Rollback();
                 _logger.Error($"Um erro ocorreu durante a criação do quadro de horario {ex.Message}");
-                throw new DatabaseException("Um erro ocorreu durante a criação do quadro de horários");
+                throw new DatabaseException(ErrorMessages.CreateTimetableError);
             }
 
-        }
-
-        private DateOnly GetCurrentDate()
-        {
-            var offset = TimeSpan.FromHours(-3);
-            var currentDateWithOffset = DateTimeOffset.UtcNow.ToOffset(offset);
-            var dateOnlyWithOffset = new DateOnly(currentDateWithOffset.Year, currentDateWithOffset.Month, currentDateWithOffset.Day);
-
-            return dateOnlyWithOffset;
         }
 
         public async Task<PagedResult<TimetableDTO>> GetAllAsync(int page, int pageSize)
@@ -97,6 +82,33 @@ namespace TimeasyAPI.src.Services
             return pagedResultDTO;
         }
 
+        public async Task RemoveSubjectFromTimetable(Guid timetableId, Guid SubjectId)
+        {
+
+            await CheckIfTimetableIsValidForChanges(timetableId);
+
+            var result = await _timetableRepository.GetTimetableSubjectByIdAsync(timetableId, SubjectId);
+
+            if (result == null)
+            {
+                throw new AppException(ErrorMessages.NoAssociatedSubject);
+            }
+
+            try
+            {
+                _unitOfWork.CreateTransaction();
+                _timetableRepository.RemoveSubjectFromTimetable(result);
+                _unitOfWork.Commit();
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                _logger.Error($"Erro ao deletar TimetableSubject");
+                _unitOfWork.Rollback();
+                throw new AppException(ErrorMessages.DeleteTimetableError);
+            }
+        }
+
         public Task RemoveByIdAsync(Guid id)
         {
             throw new NotImplementedException();
@@ -105,6 +117,74 @@ namespace TimeasyAPI.src.Services
         public Task UpdateAsync(UpdateTeacherRequest request)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<RoomDTO>> GetTimetableRooms(Guid timetableId)
+        {
+
+            var result = await _timetableRepository.GetTimetableRoomsAsync(timetableId);
+
+            if (result == null)
+            {
+                throw new AppException(ErrorMessages.TimetableNotFound);
+            }
+
+            return result.Rooms.Select( r =>
+            {
+                return r.EntitieToMap();
+            }).ToList();    
+        }
+
+
+        public async Task RemoveCourseFromTimetable(Guid timetableId, Guid courseId)
+        {
+            await CheckIfTimetableIsValidForChanges(timetableId);
+
+            var result = await _timetableRepository.GetTimetableCourseByIdAsync(timetableId, courseId);
+
+
+            if (result == null)
+            {
+                throw new AppException(ErrorMessages.NoAssociatedCourse);
+            }
+
+            try
+            {
+                _unitOfWork.CreateTransaction();
+                _timetableRepository.RemoveCourseFromTimetable(result);
+                _unitOfWork.Commit();
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                _logger.Error($"Erro ao deletar TimetableCourse");
+                _unitOfWork.Rollback();
+                throw new AppException(ErrorMessages.DeleteTimetableError);
+            }
+        }
+
+        private DateOnly GetCurrentDate()
+        {
+            var offset = TimeSpan.FromHours(-3);
+            var currentDateWithOffset = DateTimeOffset.UtcNow.ToOffset(offset);
+            var dateOnlyWithOffset = new DateOnly(currentDateWithOffset.Year, currentDateWithOffset.Month, currentDateWithOffset.Day);
+
+            return dateOnlyWithOffset;
+        }
+
+        private async Task CheckIfTimetableIsValidForChanges(Guid timetableId)
+        {
+            var timetable = await _timetableRepository.GetByIdAsync(timetableId);
+
+            if (timetable == null)
+            {
+                throw new AppException(ErrorMessages.TimetableNotFound);
+            }
+
+            if (!timetable.Status.Equals(TimetableStatus.ANALYSE))
+            {
+                throw new AppException(ErrorMessages.CannotChangeTimetable);
+            }
         }
     }
 }

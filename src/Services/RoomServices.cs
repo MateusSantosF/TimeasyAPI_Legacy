@@ -40,7 +40,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao criar Sala ${ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao criar sala {ex.Message}");
+                throw new DatabaseException(ErrorMessages.CreateRoomError);
             }
             return room.EntitieToMap();
         }
@@ -72,7 +72,7 @@ namespace TimeasyAPI.src.Services
 
             if(result is null)
             {
-                throw new AppException("Nenhuma sala encontrada com o Id informado.");
+                throw new AppException(ErrorMessages.RoomNotFound);
             }
 
             if (!result.Active)
@@ -89,10 +89,8 @@ namespace TimeasyAPI.src.Services
             }
             catch(Exception)
             {
-                throw new DatabaseException("Um erro ocorreu durante a remoção.");
+                throw new DatabaseException(ErrorMessages.RemoveRoomError);
             }
-            
-
         }
 
         public async Task UpdateAsync(UpdateRoomRequest request)
@@ -103,7 +101,7 @@ namespace TimeasyAPI.src.Services
 
             if (result is null)
             {
-                throw new AppException("Nenhuma sala encontrada com o Id informado.");
+                throw new AppException(ErrorMessages.RoomNotFound);
             }
                 
             if(request.TypeId.HasValue)
@@ -135,7 +133,7 @@ namespace TimeasyAPI.src.Services
 
             }catch(Exception )
             {
-                throw new DatabaseException("Um erro ocorreu durante a atualização.");
+                throw new DatabaseException(ErrorMessages.UpdateRoomError);
             }
 
         }

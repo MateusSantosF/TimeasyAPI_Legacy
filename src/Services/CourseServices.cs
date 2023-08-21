@@ -1,6 +1,7 @@
 ﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Course.Requests;
 using TimeasyAPI.src.DTOs.Courses;
+using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects;
@@ -36,7 +37,7 @@ namespace TimeasyAPI.src.Services
 
             if (!validPeriodAmount)
             {
-                throw new AppException("Uma ou mais disciplinas possuem o perido, maior que o perido do curso.");
+                throw new AppException(ErrorMessages.InvalidSubjectPeriod);
             }
 
             try
@@ -50,7 +51,7 @@ namespace TimeasyAPI.src.Services
             {
                 _logger.Error($"Erro ao criar Course ${ex.Message}");
                 _unitOfWork.Rollback();
-                throw new DatabaseException($"Erro ao criar Curso");
+                throw new DatabaseException(ErrorMessages.CreateCourseError);
             }
             return course.EntitieToMap();
         }
@@ -82,7 +83,7 @@ namespace TimeasyAPI.src.Services
 
             if (result is null)
             {
-                throw new AppException("Nenhum Curso encontrado com o Id informado.");
+                throw new AppException(ErrorMessages.CourseNotFound);
             }
 
             if (!result.Active)
@@ -98,7 +99,7 @@ namespace TimeasyAPI.src.Services
             }
             catch (Exception)
             {
-                throw new DatabaseException("Um erro ocorreu durante a remoção.");
+                throw new DatabaseException(ErrorMessages.DeleteCourseError);
             }
 
         }
@@ -110,26 +111,26 @@ namespace TimeasyAPI.src.Services
 
             if(course == null)
             {
-                throw new  AppException("Não foi encontrado um curso com o Id informado");
+                throw new  AppException(ErrorMessages.CourseNotFound);
             }
 
             var subjects = await _subjectRepository.GetAllById(request.Subjects);
 
             if (subjects == null)
             {
-                throw new AppException("Não foram encontradas  disciplinas com os Ids informados.");
+                throw new AppException(ErrorMessages.NoSubjectsFound);
             }
 
             var allSubjectsBelongsCourse = subjects.All(s => course.CourseSubject.Any(cs => s.Id.Equals(cs.SubjectId)));
 
             if (!allSubjectsBelongsCourse)
             {
-                throw new AppException("Uma ou mais das disciplinas informadas não pertence ao curso.");
+                throw new AppException(ErrorMessages.SubjectNotBelongsCourse);
             }
 
             if (course.CourseSubject.Count.Equals(subjects.Count))
             {
-                throw new AppException("Um curso precisa ter no mínimo uma disciplina associada.");
+                throw new AppException(ErrorMessages.CourseMinSubjects);
             }
 
             var subjectsForRemove = subjects.Select(sb =>
@@ -148,7 +149,7 @@ namespace TimeasyAPI.src.Services
             }
             catch (Exception)
             {
-                throw new DatabaseException("Um erro ocorreu durante a remoção.");
+                throw new DatabaseException(ErrorMessages.RemoveCourseError);
             }
 
         }
@@ -160,7 +161,7 @@ namespace TimeasyAPI.src.Services
 
             if(result == null)
             {
-                throw new AppException("Nenhum curso foi encontrado com o Id informado.");
+                throw new AppException(ErrorMessages.CourseNotFound);
             }
 
             if(request.Name != null)
@@ -216,7 +217,7 @@ namespace TimeasyAPI.src.Services
             }
             catch (Exception)
             {
-                throw new DatabaseException("Um erro ocorreu durante a atualização.");
+                throw new DatabaseException(ErrorMessages.UpdateCourseError);
             }
         }
     }
