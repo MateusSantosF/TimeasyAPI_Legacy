@@ -18,5 +18,7 @@ namespace TimeasyAPI.src.Repositories.Interfaces
         Task<Timetable> GetTimetableSubjectsAsync(Guid timetableId);
 
         Task<Timetable> GetTimetableRoomsAsync(Guid timetableId);
+
+        Task<Timetable> GetTimetableCoursesWithSubjectsAsync(Guid timetableId);
     }
 }

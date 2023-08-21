@@ -169,6 +169,22 @@ namespace TimeasyAPI.src.Services
             }).ToList();
         }
 
+        public async Task<List<GetTimetableCourseWithSubjectsDTO>> GetTimetableCoursesWithSubjects(Guid timetableId)
+        {
+
+            var result = await _timetableRepository.GetTimetableCoursesWithSubjectsAsync(timetableId);
+
+            if (result == null)
+            {
+                throw new AppException(ErrorMessages.TimetableNotFound);
+            }
+
+            return result.TimetableCourses.Select(c =>
+            {
+                return c.EntitieToMapWithSubjects();
+            }).ToList();
+        }
+
 
 
         public async Task RemoveCourseFromTimetable(Guid timetableId, Guid courseId)

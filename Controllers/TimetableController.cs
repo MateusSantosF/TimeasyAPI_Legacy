@@ -37,6 +37,12 @@ namespace TimeasyAPI.Controllers
             return Ok(await _timetableServices.GetTimetableCourses(timetableId));
         }
 
+        [HttpGet("courses-subjects")]
+        public async Task<IActionResult> GetTimetableCoursesWithSubjects(Guid timetableId)
+        {
+            return Ok(await _timetableServices.GetTimetableCoursesWithSubjects(timetableId));
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAllPagedAsync(int page = 1, int pageSize = 10)

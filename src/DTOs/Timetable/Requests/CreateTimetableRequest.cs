@@ -10,11 +10,11 @@ namespace TimeasyAPI.src.DTOs.Timetable.Requests
 
         [Required]
         [MinLength(1)]
-        public List<TimetableSubjectDTO> Subjects { get; set; }
+        public List<CreateTimetableSubjectDTO> Subjects { get; set; }
 
         [Required]
         [MinLength(1)]
-        public List<TimetableCourseDTO> Courses { get; set; }
+        public List<CreateTimetableCourseDTO> Courses { get; set; }
 
         [Required]
         [MinLength(1)]

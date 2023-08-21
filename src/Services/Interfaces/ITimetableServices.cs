@@ -21,5 +21,7 @@ namespace TimeasyAPI.src.Services.Interfaces
         Task<List<RoomDTO>> GetTimetableRooms(Guid timetableId);
         Task<List<SubjectDTO>> GetTimetableSubjects(Guid timetableId);
         Task<List<CourseDTO>> GetTimetableCourses(Guid timetableId);
+
+        Task<List<GetTimetableCourseWithSubjectsDTO>> GetTimetableCoursesWithSubjects(Guid timetableId);
     }
 }

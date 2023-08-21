@@ -47,6 +47,18 @@ namespace TimeasyAPI.src.Repositories
                         .FirstOrDefaultAsync();
         }
 
+        public async Task<Timetable> GetTimetableCoursesWithSubjectsAsync(Guid timetableId)
+        {
+            return await _entitie
+                        .Where(t => t.Id.Equals(timetableId))
+                            .Include(t => t.TimetableCourses)
+                                .ThenInclude( t => t.Course)
+                                    .ThenInclude(t => t.TimetableSubjects)
+                                        .ThenInclude( ts => ts.Subject)
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync();
+        }
+
         public async Task<Timetable> GetTimetableSubjectsAsync(Guid timetableId)
         {
             return await _entitie

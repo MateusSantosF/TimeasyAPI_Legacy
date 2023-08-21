@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TimeasyAPI.src.DTOs.Timetable
+namespace TimeasyAPI.src.DTOs.Timetable.Requests
 {
-    public class TimetableSubjectDTO
+    public class CreateTimetableSubjectDTO
     {
         [Required]
         public Guid SubjectId { get; set; }

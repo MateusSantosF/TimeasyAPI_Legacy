@@ -1,4 +1,5 @@
-﻿using TimeasyAPI.src.Models.ValueObjects.Enums;
+﻿using TimeasyAPI.src.DTOs.Timetable.Requests;
+using TimeasyAPI.src.Models.ValueObjects.Enums;
 
 namespace TimeasyAPI.src.DTOs.Timetable
 {
@@ -16,7 +17,7 @@ namespace TimeasyAPI.src.DTOs.Timetable
 
 
         public IEnumerable<Guid> Rooms { get; set; }    
-        public IEnumerable<TimetableSubjectDTO> Subjects { get; set; }
-        public IEnumerable<TimetableCourseDTO> Courses { get; set; }
+        public IEnumerable<CreateTimetableSubjectDTO> Subjects { get; set; }
+        public IEnumerable<CreateTimetableCourseDTO> Courses { get; set; }
     }
 }
