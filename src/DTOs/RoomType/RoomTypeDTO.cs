@@ -1,4 +1,6 @@
-﻿namespace TimeasyAPI.src.DTOs.RoomType
+﻿using TimeasyAPI.src.Models.ValueObjects.Enums;
+
+namespace TimeasyAPI.src.DTOs.RoomType
 {
     public class RoomTypeDTO
     {
@@ -9,6 +11,6 @@
 
         public bool IsComputerLab { get; set; }
 
-        public string OperationalSystem { get; set; }
+        public OperationalSystem? OperationalSystem { get; set; }
     }
 }

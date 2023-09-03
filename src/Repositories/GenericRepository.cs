@@ -53,9 +53,23 @@ namespace TimeasyAPI.src.Repositories
             _entitie.Remove(entity); 
         }
 
+        public async Task<PagedResult<T>> GetAllAsync(int page, int pageSize, Expression<Func<T, bool>>? searchCondition = null)
+        {
+            IQueryable<T> query = _entitie.Where(e => e.Active == true);
+
+            if (searchCondition != null)
+            {
+                query = query.Where(searchCondition);
+            }
+
+            return await query.GetPagedAsync(page, pageSize);
+        }
+
         public async Task<PagedResult<T>> GetAllAsync(int page, int pageSize)
         {
-            return await _entitie.Where(e => e.Active == true).GetPagedAsync(page, pageSize);
+            IQueryable<T> query = _entitie.Where(e => e.Active == true);
+
+            return await query.GetPagedAsync(page, pageSize);
         }
 
         public async Task<T> GetByIdAsync(Guid id)

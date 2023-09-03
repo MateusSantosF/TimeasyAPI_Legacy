@@ -1,6 +1,5 @@
 ﻿using TimeasyAPI.src.DTOs.RoomType;
 using TimeasyAPI.src.Models;
-using TimeasyAPI.src.Models.ValueObjects.Enums;
 
 namespace TimeasyAPI.src.Mappings
 {
@@ -14,7 +13,7 @@ namespace TimeasyAPI.src.Mappings
                 Id = room.Id,
                 Name = room.Name,
                 IsComputerLab = room.IsComputerLab,
-                OperationalSystem = room.OperationalSystem?.ToString()
+                OperationalSystem = room?.OperationalSystem
             };
         }
 
@@ -24,7 +23,7 @@ namespace TimeasyAPI.src.Mappings
             {
                 Name = room.Name,
                 IsComputerLab = room.IsComputerLab,
-                OperationalSystem = !string.IsNullOrEmpty(room.OperationalSystem) ? Enum.Parse<OperationalSystem>(room.OperationalSystem, true) : null
+                OperationalSystem = room.OperationalSystem.HasValue ? room.OperationalSystem.Value : null
             };
         }
     }

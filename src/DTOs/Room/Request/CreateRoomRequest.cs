@@ -16,8 +16,8 @@ namespace TimeasyAPI.src.DTOs.Room.Request
         [Range(1, 1000, ErrorMessage = "Capacity must be greater than 0.")]
         public int Capacity { get; set; }
 
-        [Required(ErrorMessage = "Type is required.")]
-        public Guid TypeId { get; set; }
+        [Required(ErrorMessage = "RoomTypeId is required.")]
+        public Guid RoomTypeId { get; set; }
 
     }
 }

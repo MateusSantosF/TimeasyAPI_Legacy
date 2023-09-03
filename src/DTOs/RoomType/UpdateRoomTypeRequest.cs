@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Validators;
 
 namespace TimeasyAPI.src.DTOs.RoomType
@@ -14,6 +15,6 @@ namespace TimeasyAPI.src.DTOs.RoomType
         public bool ?IsComputerLab { get; set; }
 
         [OperationalSystem(ErrorMessage = "Invalid OperationalSystem name")]
-        public string? OperationalSystem { get; set; }
+        public OperationalSystem? OperationalSystem { get; set; }
     }
 }

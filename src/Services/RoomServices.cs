@@ -7,6 +7,8 @@ using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
 using TimeasyAPI.src.Helpers;
+using TimeasyAPI.src.Models;
+using System.Linq.Expressions;
 
 namespace TimeasyAPI.src.Services
 {
@@ -45,9 +47,22 @@ namespace TimeasyAPI.src.Services
             return room.EntitieToMap();
         }
 
-        public async Task<PagedResult<RoomDTO>> GetAllAsync(int page, int pageSize)
+        public async Task<PagedResult<RoomDTO>> GetAllAsync(int page, int pageSize, string? name)
         {
-            var result =  await _roomRepository.GetAllWithTypeAsync(page, pageSize);
+
+            PagedResult<Room> result;
+
+            if(name is null)
+            {
+                result = await _roomRepository.GetAllWithTypeAsync(page, pageSize);
+            }
+            else
+            {
+                Expression<Func<Room, bool>> search = room => room.Name.Contains(name);
+
+                result = await _roomRepository.GetAllWithTypeAsync(page, pageSize, search);
+            }
+            
 
             var roomDTOs = result.Results.Select(room =>
             {
@@ -104,9 +119,9 @@ namespace TimeasyAPI.src.Services
                 throw new AppException(ErrorMessages.RoomNotFound);
             }
                 
-            if(request.TypeId.HasValue)
+            if(request.RoomTypeId.HasValue)
             {
-                result.RoomTypeId = request.TypeId.Value;
+                result.RoomTypeId = request.RoomTypeId.Value;
             }
 
             if( request.Capacity.HasValue)

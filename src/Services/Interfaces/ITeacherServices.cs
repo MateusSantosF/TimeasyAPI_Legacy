@@ -6,7 +6,7 @@ namespace TimeasyAPI.src.Services.Interfaces
 {
     public interface ITeacherServices
     {
-        Task<PagedResult<TeacherDTO>> GetAllAsync(int page, int pageSize);
+        Task<PagedResult<TeacherDTO>> GetAllAsync(int page, int pageSize, string? name);
 
         Task RemoveByIdAsync(Guid id);
 

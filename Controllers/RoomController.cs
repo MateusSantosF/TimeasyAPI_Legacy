@@ -57,9 +57,9 @@ namespace TimeasyAPI.Controllers
         /// <param name="pageSize">Número de items por página</param>
         /// <returns>Uma lista de salas de forma paginada</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllPaged(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllPaged(int page = 1, int pageSize = 10, string? name = null)
         {
-            return Ok(await _roomServices.GetAllAsync(page, pageSize));
+            return Ok(await _roomServices.GetAllAsync(page, pageSize, name));
         }
 
         /// <summary>

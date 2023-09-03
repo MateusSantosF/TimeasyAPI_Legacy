@@ -1,8 +1,10 @@
-﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
+﻿using System.Linq.Expressions;
+using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Teacher;
 using TimeasyAPI.src.DTOs.Teacher.Requests;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
+using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Repositories.Interfaces;
@@ -32,7 +34,7 @@ namespace TimeasyAPI.src.Services
             try
             {
                 _unitOfWork.CreateTransaction();
-                subject.InstituteId =instituteId;
+                subject.InstituteId = instituteId;
                 subject = await _teacherRepository.CreateAsync(subject);
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
@@ -47,9 +49,21 @@ namespace TimeasyAPI.src.Services
             return subject.EntitieToMap();
         }
 
-        public async Task<PagedResult<TeacherDTO>> GetAllAsync(int page, int pageSize)
+        public async Task<PagedResult<TeacherDTO>> GetAllAsync(int page, int pageSize, string? name)
         {
-            var result =  await _teacherRepository.GetAllAsync(page, pageSize);
+
+            PagedResult<Teacher> result;
+
+            if(name is not null)
+            {
+                Expression<Func<Teacher, bool>> searchCondition = entity => entity.FullName.Contains(name);
+                result = await _teacherRepository.GetAllAsync(page, pageSize, searchCondition);
+            }
+            else
+            {
+                result = await _teacherRepository.GetAllAsync(page, pageSize);
+            }
+          
 
             var teacherDTOs = result.Results.Select(room =>
             {

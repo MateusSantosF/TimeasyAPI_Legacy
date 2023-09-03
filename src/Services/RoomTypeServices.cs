@@ -1,4 +1,5 @@
-﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
+﻿using System.Linq.Expressions;
+using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.RoomType;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
@@ -89,9 +90,20 @@ namespace TimeasyAPI.src.Services
         
         }
 
-        public async Task<PagedResult<RoomTypeDTO>> GetAllAsync(int page, int pageSize)
+        public async Task<PagedResult<RoomTypeDTO>> GetAllAsync(int page, int pageSize, string? name)
         {
-            var result = await _roomTypeRepository.GetAllAsync(page, pageSize);
+
+            PagedResult<RoomType> result; 
+
+            if(name is not null)
+            {
+                Expression<Func<RoomType, bool>> searchCondition = entity => entity.Name.Contains(name);
+                result = await _roomTypeRepository.GetAllAsync(page, pageSize, searchCondition);
+            }
+            else
+            {
+                result = await _roomTypeRepository.GetAllAsync(page, pageSize);
+            }
 
             var roomTypeDTOs = result.Results.Select(room =>
             {
@@ -130,19 +142,25 @@ namespace TimeasyAPI.src.Services
             {
                 var isLab = request.IsComputerLab.Value;
                 
-                if(isLab && request.OperationalSystem == null)
+                if(isLab && !request.OperationalSystem.HasValue)
                 {
                     throw new AppException(ErrorMessages.ComputerLabMissingOS);
                 }
 
-                if (request.OperationalSystem != null && isLab)
+                if (request.OperationalSystem.HasValue && isLab)
                 {
                     result.IsComputerLab = true;
-                    result.OperationalSystem = Enum.Parse<OperationalSystem>(request.OperationalSystem, true);
+                    result.OperationalSystem = request.OperationalSystem.Value;
+                }
+                else
+                {
+                    result.IsComputerLab = false;
+                    result.OperationalSystem = null;
                 }
             }
             else
             {
+                result.IsComputerLab = false;
                 result.OperationalSystem = null;
             }
 

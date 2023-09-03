@@ -19,6 +19,6 @@ namespace TimeasyAPI.src.DTOs.Room.Request
         public int? Capacity { get; set; }
 
 
-        public Guid? TypeId { get; set; }
+        public Guid? RoomTypeId { get; set; }
     }
 }

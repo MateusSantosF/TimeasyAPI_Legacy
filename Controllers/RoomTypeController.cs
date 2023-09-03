@@ -43,9 +43,9 @@ namespace TimeasyAPI.Controllers
         /// <returns>Uma lista de tipo de salas de forma paginada</returns>
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllPagedAsync(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllPagedAsync(int page = 1, int pageSize = 10, string? name = null)
         {
-            return Ok(await _roomTypeService.GetAllAsync(page, pageSize));
+            return Ok(await _roomTypeService.GetAllAsync(page, pageSize, name));
         }
 
         /// <summary>

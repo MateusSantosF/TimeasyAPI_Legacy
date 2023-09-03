@@ -21,18 +21,16 @@ namespace TimeasyAPI.src.DTOs.Teacher.Requests
         public string AcademicDegree { get; set; }
 
         [Required(ErrorMessage = "BirthDate is required.")]
-        [DataType(DataType.Date, ErrorMessage = "Invalid date format.")]
-        public DateOnly BirthDate { get; set; }
+        public string BirthDate { get; set; }
 
         [Required(ErrorMessage = "TeachingHours is required.")]
         public int TeachingHours { get; set; }
 
         [Required(ErrorMessage = "IfspServiceTime is required.")]
-        [DataType(DataType.Date, ErrorMessage = "Invalid date and time format.")]
-        public DateOnly IfspServiceTime { get; set; }
+        public string IfspServiceTime { get; set; }
 
         [Required(ErrorMessage = "CampusServiceTime is required.")]
         [DataType(DataType.Date, ErrorMessage = "Invalid date and time format.")]
-        public DateOnly CampusServiceTime { get; set; }
+        public string CampusServiceTime { get; set; }
     }
 }

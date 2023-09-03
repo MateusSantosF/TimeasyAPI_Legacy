@@ -5,7 +5,9 @@ namespace TimeasyAPI.src.Repositories.Interfaces
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {
-        public Task<PagedResult<T>> GetAllAsync(int page, int  pageSize);
+        public Task<PagedResult<T>> GetAllAsync(int page, int  pageSize, Expression<Func<T, bool>>? searchCondition);
+
+        public Task<PagedResult<T>> GetAllAsync(int page, int pageSize);
 
         public Task<T> CreateAsync(T entity);
 

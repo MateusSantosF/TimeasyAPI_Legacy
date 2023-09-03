@@ -9,14 +9,19 @@ namespace TimeasyAPI.src.Validators
         public override bool IsValid(object value)
         {
 
-            var os = (string)value;
-
-            if(string.IsNullOrEmpty(os))
+            if(value is null)
             {
                 return true;
             }
 
-            if(Enum.TryParse<OperationalSystem>(os, ignoreCase:true, out _))
+            var os = (uint)value;
+
+            string osString = os.ToString();
+
+            ReadOnlySpan<char> osSpan = osString.AsSpan();
+
+
+            if (Enum.TryParse<OperationalSystem>(osSpan, ignoreCase:true, out _))
             {
                 return true;
             }

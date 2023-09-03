@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TimeasyAPI.src.DTOs.Teacher.Requests;
 using TimeasyAPI.src.Services.Interfaces;
 
@@ -22,11 +23,12 @@ namespace TimeasyAPI.Controllers
         /// </summary>
         /// <param name="page">Número da página</param>
         /// <param name="pageSize">Número de items por página</param>
+        /// <param name="name">Nome do professor que deseja buscar</param>
         [HttpGet]
         [ProducesResponseType((int)StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllAsync(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllAsync(int page = 1, int pageSize = 10, string? name = null)
         {
-            return Ok(await _teacherServices.GetAllAsync(page, pageSize));
+            return Ok(await _teacherServices.GetAllAsync(page, pageSize, name));
         }
 
         /// <summary>
@@ -34,6 +36,7 @@ namespace TimeasyAPI.Controllers
         /// </summary>
         /// <param name="request">Informações do professor</param>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateAsync([FromBody] CreateTeacherRequest request)
         {
             if (!ModelState.IsValid)

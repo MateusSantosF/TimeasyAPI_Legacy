@@ -14,5 +14,14 @@ namespace TimeasyAPI.src.Helpers
 
             return entitieId;
         }
+
+        public static DateOnly TryParseToBrLocateDate(this string date)
+        {
+            if (DateOnly.TryParseExact(date, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateOnly result))
+            {
+                return result;
+            }
+            throw new ArgumentException("A data não está no formato correto (dd/MM/yyyy).");
+        }
     }
 }

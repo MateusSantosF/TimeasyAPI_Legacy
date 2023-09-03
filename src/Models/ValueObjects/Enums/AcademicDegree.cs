@@ -6,6 +6,9 @@
         Bachelor,
         Master,
         Doctorate,
-        PostDoctorate
+        PostDoctorate,
+        Specialist,
+        Technologist,
+        Licensed
     }
 }
