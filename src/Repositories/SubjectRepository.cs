@@ -33,5 +33,11 @@ namespace TimeasyAPI.src.Repositories
         {
             return await _entitie.AsNoTracking().Where(s => subjectsId.Contains(s.Id)).ToListAsync();
         }
+
+        public async Task<bool> CheckIfExistsAsync(List<Guid> subjectsId)
+        {
+            return await _entitie.AsNoTracking().AnyAsync(s => subjectsId.Contains(s.Id));
+
+        }
     }
 }

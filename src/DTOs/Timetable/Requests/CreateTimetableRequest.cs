@@ -20,5 +20,9 @@ namespace TimeasyAPI.src.DTOs.Timetable.Requests
         [MinLength(1)]
         public List<Guid> Rooms { get; set; }
 
+        [Required]
+        [MinLength(1)]
+        public List<Guid> Teachers { get; set; }
+
     }
 }

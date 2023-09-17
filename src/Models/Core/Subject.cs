@@ -13,6 +13,7 @@ namespace TimeasyAPI.src.Models
 
         //EF Relations
         public List<CourseSubject> CourseSubject { get; } = new();
+        public List<FpaSubjects> Subjects { get; } = new();
         public List<TimetableSubjects> TimetableSubjects { get; } = new();
 
         public Guid RoomTypeId { get; set; }

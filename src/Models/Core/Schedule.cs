@@ -6,10 +6,9 @@
         public string End { get; set; }
 
         // EF Relations
-
+        public Guid FPAId { get; set; }
         public FPA FPA { get; set; }
 
-        public Guid FPAId { get; set; }
 
 
     }

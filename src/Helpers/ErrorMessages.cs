@@ -78,5 +78,8 @@
         public const string DeleteTeacherError = "Error deleting teacher.";
 
 
+        // FPA'S
+        public const string FpaNotFound = "No FPA found with the provided TimetableId and Teacher info.";
+
     }
 }

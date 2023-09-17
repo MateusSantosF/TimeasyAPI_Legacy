@@ -54,7 +54,17 @@ namespace TimeasyAPI.src.Mappings
                 };
             });
 
+            var timetableTeachers = timetable.Teachers.Select(teacherId =>
+            {
+                return new Teacher
+                {
+                    Id = teacherId,
+                  
+                };
+            });
+
             newTimetable.Rooms.AddRange(timetablerooms);
+            newTimetable.Teachers.AddRange(timetableTeachers);
             newTimetable.TimetableSubjects.AddRange(timetableSubjects);
             newTimetable.TimetableCourses.AddRange(timetableCourses);
 

@@ -7,6 +7,7 @@ using TimeasyAPI.src.DTOs.Timetable;
 using TimeasyAPI.src.DTOs.Timetable.Requests;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
+using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Repositories.Interfaces;
@@ -21,19 +22,26 @@ namespace TimeasyAPI.src.Services
         private readonly ITimetableRepository _timetableRepository;
         private readonly ISubjectRepository _subjectRepository;
         private readonly IRoomRepository _roomRepository;
+        private readonly IFPARepository _FPARepository;
         private readonly ICourseRepository _courseRepository;
+        private readonly ITeacherRepository _teacherRepository;
         private readonly Serilog.ILogger _logger;
 
         public TimetableServices(ITimetableRepository timetableRepository, 
             ISubjectRepository subjectRepository,
             IRoomRepository roomRepository,
             ICourseRepository courseRepository,
-            IUnitOfWork unitOfWork, Serilog.ILogger logger)
+            IFPARepository fpaRepository,
+            ITeacherRepository teacherRepository,
+            IUnitOfWork unitOfWork, 
+            Serilog.ILogger logger)
         {
             _timetableRepository = timetableRepository;
             _roomRepository = roomRepository;
             _courseRepository = courseRepository;
             _subjectRepository = subjectRepository;
+            _FPARepository = fpaRepository;
+            _teacherRepository = teacherRepository;
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
@@ -47,11 +55,12 @@ namespace TimeasyAPI.src.Services
             newTimetable.CreateAt = GetCurrentDate();
 
             try
-            {
-         
+            {   
                 _roomRepository.Attach(newTimetable.Rooms);
+                _teacherRepository.Attach(newTimetable.Teachers);
                 _unitOfWork.CreateTransaction();
                 var result = await _timetableRepository.CreateAsync(newTimetable);
+                await _FPARepository.AddRange(CreateFpaForAllTeachers(result.Teachers, result.Id));
                 _unitOfWork.Commit();
                 await _unitOfWork.SaveChangesAsync();
 
@@ -185,8 +194,6 @@ namespace TimeasyAPI.src.Services
             }).ToList();
         }
 
-
-
         public async Task RemoveCourseFromTimetable(Guid timetableId, Guid courseId)
         {
             await CheckIfTimetableIsValidForChanges(timetableId);
@@ -236,6 +243,18 @@ namespace TimeasyAPI.src.Services
             {
                 throw new AppException(ErrorMessages.CannotChangeTimetable);
             }
+        }
+
+        private List<FPA> CreateFpaForAllTeachers(List<Teacher> teachers, Guid timetableId)
+        {
+            return teachers.Select(t =>
+            {
+                return new FPA
+                {
+                    TeacherId = t.Id,
+                    TimetableId = timetableId
+                };
+            }).ToList();
         }
     }
 }

@@ -3,6 +3,7 @@ using TimeasyAPI.src.DTOs.Subject;
 using TimeasyAPI.src.DTOs.Subject.Requests;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
+using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Repositories.Interfaces;
@@ -140,6 +141,10 @@ namespace TimeasyAPI.src.Services
             {
                 throw new DatabaseException(ErrorMessages.UpdateSubjectError);
             }
+        }
+        public async Task<bool> CheckIfExistsAsync(List<Guid> subjectsId)
+        {
+            return await _subjectRepository.CheckIfExistsAsync(subjectsId);
         }
     }
 }

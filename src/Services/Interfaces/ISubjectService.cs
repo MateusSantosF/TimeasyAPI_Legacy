@@ -11,6 +11,8 @@ namespace TimeasyAPI.src.Services.Interfaces
         Task<PagedResult<SubjectDTO>> GetAllAsync(int page, int pageSize);
         Task UpdateAsync(UpdateSubjectRequest request);
         Task DeleteByIdAsync(Guid id);
+
+        Task<bool> CheckIfExistsAsync(List<Guid> subjectsId);
         Task<SubjectDTO> CreateAsync(CreateSubjectRequest request);
     }
 }

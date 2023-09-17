@@ -7,6 +7,8 @@ namespace TimeasyAPI.src.Repositories.Interfaces
     {
 
         Task<List<Subject>> GetAllById(List<Guid> subjectsId);
+
+        Task<bool> CheckIfExistsAsync(List<Guid> subjectsId);
         Task<PagedResult<Subject>> GetAllWithRoomTypeAsync(int page, int pageSize);
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TimeasyAPI.src.Data;
 
@@ -10,9 +11,11 @@ using TimeasyAPI.src.Data;
 namespace TimeasyAPI.Migrations
 {
     [DbContext(typeof(TimeasyDbContext))]
-    partial class TimeasyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230917023848_AddedTeachersInTimetable")]
+    partial class AddedTeachersInTimetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,6 +322,9 @@ namespace TimeasyAPI.Migrations
                     b.Property<uint>("Complexity")
                         .HasColumnType("int unsigned");
 
+                    b.Property<Guid?>("FPAId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -327,6 +333,8 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FPAId");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -433,26 +441,6 @@ namespace TimeasyAPI.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("CourseSubject");
-                });
-
-            modelBuilder.Entity("TimeasyAPI.src.Models.ValueObjects.FpaSubjects", b =>
-                {
-                    b.Property<Guid>("SubjectId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("FPAId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("SubjectId", "CourseId");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("FPAId");
-
-                    b.ToTable("FpaSubjects");
                 });
 
             modelBuilder.Entity("TimeasyAPI.src.Models.ValueObjects.TimetableCourses", b =>
@@ -625,6 +613,10 @@ namespace TimeasyAPI.Migrations
 
             modelBuilder.Entity("TimeasyAPI.src.Models.Subject", b =>
                 {
+                    b.HasOne("TimeasyAPI.src.Models.FPA", null)
+                        .WithMany("Subjects")
+                        .HasForeignKey("FPAId");
+
                     b.HasOne("TimeasyAPI.src.Models.RoomType", "RoomTypeNeeded")
                         .WithMany("Subjects")
                         .HasForeignKey("RoomTypeId")
@@ -666,29 +658,6 @@ namespace TimeasyAPI.Migrations
 
                     b.HasOne("TimeasyAPI.src.Models.Subject", "Subject")
                         .WithMany("CourseSubject")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("TimeasyAPI.src.Models.ValueObjects.FpaSubjects", b =>
-                {
-                    b.HasOne("TimeasyAPI.src.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TimeasyAPI.src.Models.FPA", null)
-                        .WithMany("Subjects")
-                        .HasForeignKey("FPAId");
-
-                    b.HasOne("TimeasyAPI.src.Models.Subject", "Subject")
-                        .WithMany("Subjects")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -788,8 +757,6 @@ namespace TimeasyAPI.Migrations
             modelBuilder.Entity("TimeasyAPI.src.Models.Subject", b =>
                 {
                     b.Navigation("CourseSubject");
-
-                    b.Navigation("Subjects");
 
                     b.Navigation("TimetableSubjects");
                 });

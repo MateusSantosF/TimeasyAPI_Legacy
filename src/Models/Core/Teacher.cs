@@ -16,6 +16,7 @@ namespace TimeasyAPI.src.Models
         // EF Relations
         public Guid InstituteId { get; set; }
         public Institute Institute { get; set; }
-        public ICollection<FPA> FPA { get; set; }
+        public List<FPA> FPA { get; } = new();
+        public List<Timetable> Timetables { get; } = new();
     }
 }

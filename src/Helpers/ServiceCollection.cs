@@ -37,6 +37,12 @@ namespace TimeasyAPI.src.Helpers
             serviceCollection.AddScoped<ITimetableRepository, TimetableRepository>();
             serviceCollection.AddScoped<ITimetableServices, TimetableServices>();
 
+            serviceCollection.AddScoped<IFPARepository, FPARepository>();
+            serviceCollection.AddScoped<IFPAServices, FPAServices>();
+
+            serviceCollection.AddScoped<IScheduleRepository, ScheduleRepository>();
+
+
         }
     }
 }

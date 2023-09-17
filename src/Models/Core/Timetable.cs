@@ -19,5 +19,6 @@ namespace TimeasyAPI.src.Models
         public List<TimetableCourses> TimetableCourses { get; } = new();
         public List<Room> Rooms { get; } = new();
         public List<FPA> FPAs { get; } = new();
+        public List<Teacher> Teachers { get; } = new();
     }
 }
