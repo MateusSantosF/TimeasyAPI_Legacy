@@ -50,11 +50,19 @@ namespace TimeasyAPI.Controllers
             return Ok(await _timetableServices.GetAllAsync(page, pageSize));
         }
 
+        /// <summary>
+        /// Deleta uma disciplina associada a um curso 
+        /// </summary>
+        /// <param name="timetableId"></param>
+        /// <param name="subjectId"></param>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
+
         [HttpDelete("subject")]
-        public async Task<IActionResult> RemoveSubjectFromTimetable(Guid timetableId, Guid subjectId)
+        public async Task<IActionResult> RemoveSubjectFromTimetable(Guid timetableId, Guid subjectId, Guid courseId)
         {
 
-            await _timetableServices.RemoveSubjectFromTimetable(timetableId, subjectId);
+            await _timetableServices.RemoveSubjectFromTimetable(timetableId, subjectId, courseId);
            return NoContent();
         }
 

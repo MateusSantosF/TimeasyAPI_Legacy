@@ -22,22 +22,22 @@ namespace TimeasyAPI.src.Repositories
             _entitie = context.Set<Timetable>();
         }
 
-        public async Task<TimetableSubjects> GetTimetableSubjectByIdAsync(Guid timetableId, Guid subjectId)
+        public async Task<TimetableSubjects?> GetTimetableSubjectByIdAsync(Guid timetableId, Guid subjectId, Guid courseId)
         {
            return await _timetableSubject.AsNoTracking()
-                    .Where(t => t.TimetableId.Equals(timetableId) && t.SubjectId.Equals(subjectId))
+                    .Where(t => t.TimetableId.Equals(timetableId) && t.SubjectId.Equals(subjectId) && t.CourseId.Equals(courseId))
                     .FirstOrDefaultAsync();
         }
 
 
-        public async Task<TimetableCourses> GetTimetableCourseByIdAsync(Guid timetableId, Guid courseId)
+        public async Task<TimetableCourses?> GetTimetableCourseByIdAsync(Guid timetableId, Guid courseId)
         {
             return  await _timetableCourses.AsNoTracking()
                      .Where(t => t.TimetableId.Equals(timetableId) && t.CourseId.Equals(courseId))
                      .FirstOrDefaultAsync();
         }
 
-        public async Task<Timetable> GetTimetableCoursesAsync(Guid timetableId)
+        public async Task<Timetable?> GetTimetableCoursesAsync(Guid timetableId)
         {
             return await _entitie
                         .Where(t => t.Id.Equals(timetableId))
@@ -47,19 +47,19 @@ namespace TimeasyAPI.src.Repositories
                         .FirstOrDefaultAsync();
         }
 
-        public async Task<Timetable> GetTimetableCoursesWithSubjectsAsync(Guid timetableId)
+        public async Task<Timetable?> GetTimetableCoursesWithSubjectsAsync(Guid timetableId)
         {
             return await _entitie
-                        .Where(t => t.Id.Equals(timetableId))
-                            .Include(t => t.TimetableCourses)
-                                .ThenInclude( t => t.Course)
-                                    .ThenInclude(t => t.TimetableSubjects)
-                                        .ThenInclude( ts => ts.Subject)
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync();
+               .Where(t => t.Id == timetableId)
+               .Include(t => t.TimetableCourses)
+                   .ThenInclude(c => c.Course)
+                   .ThenInclude(ts => ts.TimetableSubjects)
+                   .ThenInclude(s => s.Subject)
+               .AsNoTracking()
+               .FirstOrDefaultAsync();
         }
 
-        public async Task<Timetable> GetTimetableSubjectsAsync(Guid timetableId)
+        public async Task<Timetable?> GetTimetableSubjectsAsync(Guid timetableId)
         {
             return await _entitie
                         .Where(t => t.Id.Equals(timetableId))
@@ -69,7 +69,7 @@ namespace TimeasyAPI.src.Repositories
                         .FirstOrDefaultAsync();
         }
 
-        public async Task<Timetable> GetTimetableRoomsAsync(Guid timetableId)
+        public async Task<Timetable?> GetTimetableRoomsAsync(Guid timetableId)
         {
             return await _entitie
                         .Where(t => t.Id.Equals(timetableId))
@@ -86,6 +86,11 @@ namespace TimeasyAPI.src.Repositories
 
         public void RemoveCourseFromTimetable(TimetableCourses timetableCourse)
         {
+            var timetableSubjectsToRemove = _timetableSubject
+                    .Where(ts => ts.CourseId == timetableCourse.CourseId)
+                    .ToList();
+
+            _timetableSubject.RemoveRange(timetableSubjectsToRemove);
             _timetableCourses.Remove(timetableCourse);
         }
 

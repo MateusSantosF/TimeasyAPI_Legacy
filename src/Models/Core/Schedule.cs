@@ -9,7 +9,5 @@
         public Guid FPAId { get; set; }
         public FPA FPA { get; set; }
 
-
-
     }
 }

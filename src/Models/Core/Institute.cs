@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using TimeasyAPI.src.Models.Core;
+﻿using TimeasyAPI.src.Models.Core;
 
 namespace TimeasyAPI.src.Models
 {
@@ -17,10 +16,10 @@ namespace TimeasyAPI.src.Models
         public bool Saturday { get; set; }
 
         // EF Relations
-        public ICollection<Interval> Intervals { get; set; }
-        public ICollection<Course> Courses { get; set; }
-        public ICollection<Timetable> Timetables { get; set; }
-        public ICollection<Teacher> Teachers { get; set; }
-        public ICollection<User> Users { get; set; }
+        public List<Interval> Intervals { get; set; } = new();
+        public List<Course> Courses { get; set; } = new();
+        public List<Timetable> Timetables { get; set; } = new();
+        public List<Teacher> Teachers { get; set; } = new();
+        public List<User> Users { get; set; } = new();
     }
 }

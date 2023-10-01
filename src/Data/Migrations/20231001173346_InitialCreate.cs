@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TimeasyAPI.Migrations
+namespace TimeasyAPI.src.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace TimeasyAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OpenHour = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -40,31 +40,14 @@ namespace TimeasyAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Interval",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Start = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    End = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Interval", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "RoomType",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsComputerLab = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    OperationalSystem = table.Column<uint>(type: "int unsigned", nullable: false),
+                    OperationalSystem = table.Column<uint>(type: "int unsigned", nullable: true),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -99,21 +82,45 @@ namespace TimeasyAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Interval",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Start = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    End = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    InstituteId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Interval", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Interval_Institute_InstituteId",
+                        column: x => x.InstituteId,
+                        principalTable: "Institute",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Teacher",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Registration = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    FullName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    FullName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AcademicDegree = table.Column<uint>(type: "int unsigned", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    TeachingHours = table.Column<TimeOnly>(type: "time(6)", nullable: false),
-                    IfspServiceTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CampusServiceTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TeachingHours = table.Column<int>(type: "int", nullable: false),
+                    BirthDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    IfspServiceTime = table.Column<DateOnly>(type: "date", nullable: false),
+                    CampusServiceTime = table.Column<DateOnly>(type: "date", nullable: false),
                     InstituteId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
@@ -134,6 +141,11 @@ namespace TimeasyAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreateAt = table.Column<DateOnly>(type: "date", nullable: false),
+                    EndedAt = table.Column<DateOnly>(type: "date", nullable: true),
+                    Status = table.Column<uint>(type: "int unsigned", nullable: false),
                     InstituteId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
@@ -154,9 +166,9 @@ namespace TimeasyAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    FullName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    FullName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -181,12 +193,12 @@ namespace TimeasyAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Block = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Block = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Capacity = table.Column<int>(type: "int", nullable: false),
-                    RoomTypeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    RoomTypeId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -194,6 +206,30 @@ namespace TimeasyAPI.Migrations
                     table.PrimaryKey("PK_Room", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Room_RoomType_RoomTypeId",
+                        column: x => x.RoomTypeId,
+                        principalTable: "RoomType",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Subject",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Acronym = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Complexity = table.Column<uint>(type: "int unsigned", nullable: false),
+                    RoomTypeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subject", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subject_RoomType_RoomTypeId",
                         column: x => x.RoomTypeId,
                         principalTable: "RoomType",
                         principalColumn: "Id",
@@ -206,8 +242,6 @@ namespace TimeasyAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Code = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Status = table.Column<uint>(type: "int unsigned", nullable: false),
                     TeacherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     TimetableId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -225,6 +259,31 @@ namespace TimeasyAPI.Migrations
                     table.ForeignKey(
                         name: "FK_FPA_Timetable_TimetableId",
                         column: x => x.TimetableId,
+                        principalTable: "Timetable",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "TeacherTimetable",
+                columns: table => new
+                {
+                    TeachersId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    TimetablesId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeacherTimetable", x => new { x.TeachersId, x.TimetablesId });
+                    table.ForeignKey(
+                        name: "FK_TeacherTimetable_Teacher_TeachersId",
+                        column: x => x.TeachersId,
+                        principalTable: "Teacher",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeacherTimetable_Timetable_TimetablesId",
+                        column: x => x.TimetablesId,
                         principalTable: "Timetable",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -288,67 +347,12 @@ namespace TimeasyAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "FPAInterval",
-                columns: table => new
-                {
-                    FPAsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    SchedulesId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FPAInterval", x => new { x.FPAsId, x.SchedulesId });
-                    table.ForeignKey(
-                        name: "FK_FPAInterval_FPA_FPAsId",
-                        column: x => x.FPAsId,
-                        principalTable: "FPA",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FPAInterval_Interval_SchedulesId",
-                        column: x => x.SchedulesId,
-                        principalTable: "Interval",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Subject",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Acronym = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Complexity = table.Column<uint>(type: "int unsigned", nullable: false),
-                    RoomTypeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    FPAId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Subject", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Subject_FPA_FPAId",
-                        column: x => x.FPAId,
-                        principalTable: "FPA",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Subject_RoomType_RoomTypeId",
-                        column: x => x.RoomTypeId,
-                        principalTable: "RoomType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "CourseSubject",
                 columns: table => new
                 {
                     CourseId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     SubjectId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Period = table.Column<int>(type: "int", nullable: false),
                     WeeklyClassCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -375,11 +379,20 @@ namespace TimeasyAPI.Migrations
                 {
                     SubjectId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     TimetableId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    StudentAmount = table.Column<int>(type: "int", nullable: false)
+                    IsDivided = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    DividedCount = table.Column<int>(type: "int", nullable: false),
+                    StudentsCount = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TimetableSubjects", x => new { x.SubjectId, x.TimetableId });
+                    table.PrimaryKey("PK_TimetableSubjects", x => new { x.SubjectId, x.TimetableId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_TimetableSubjects_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TimetableSubjects_Subject_SubjectId",
                         column: x => x.SubjectId,
@@ -390,6 +403,61 @@ namespace TimeasyAPI.Migrations
                         name: "FK_TimetableSubjects_Timetable_TimetableId",
                         column: x => x.TimetableId,
                         principalTable: "Timetable",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "FpaSubjects",
+                columns: table => new
+                {
+                    CourseId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    SubjectId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    FPAId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FpaSubjects", x => new { x.SubjectId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_FpaSubjects_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FpaSubjects_FPA_FPAId",
+                        column: x => x.FPAId,
+                        principalTable: "FPA",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FpaSubjects_Subject_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subject",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Schedule",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Start = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    End = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FPAId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Schedule", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Schedule_FPA_FPAId",
+                        column: x => x.FPAId,
+                        principalTable: "FPA",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -416,9 +484,25 @@ namespace TimeasyAPI.Migrations
                 column: "TimetableId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FPAInterval_SchedulesId",
-                table: "FPAInterval",
-                column: "SchedulesId");
+                name: "IX_FpaSubjects_CourseId",
+                table: "FpaSubjects",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FpaSubjects_FPAId",
+                table: "FpaSubjects",
+                column: "FPAId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Interval_InstituteId",
+                table: "Interval",
+                column: "InstituteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Room_Name",
+                table: "Room",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Room_RoomTypeId",
@@ -431,9 +515,15 @@ namespace TimeasyAPI.Migrations
                 column: "TimetablesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subject_FPAId",
-                table: "Subject",
+                name: "IX_Schedule_FPAId",
+                table: "Schedule",
                 column: "FPAId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subject_Name",
+                table: "Subject",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subject_RoomTypeId",
@@ -446,6 +536,11 @@ namespace TimeasyAPI.Migrations
                 column: "InstituteId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TeacherTimetable_TimetablesId",
+                table: "TeacherTimetable",
+                column: "TimetablesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Timetable_InstituteId",
                 table: "Timetable",
                 column: "InstituteId");
@@ -454,6 +549,11 @@ namespace TimeasyAPI.Migrations
                 name: "IX_TimetableCourses_TimetableId",
                 table: "TimetableCourses",
                 column: "TimetableId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimetableSubjects_CourseId",
+                table: "TimetableSubjects",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TimetableSubjects_TimetableId",
@@ -473,10 +573,19 @@ namespace TimeasyAPI.Migrations
                 name: "CourseSubject");
 
             migrationBuilder.DropTable(
-                name: "FPAInterval");
+                name: "FpaSubjects");
+
+            migrationBuilder.DropTable(
+                name: "Interval");
 
             migrationBuilder.DropTable(
                 name: "RoomTimetable");
+
+            migrationBuilder.DropTable(
+                name: "Schedule");
+
+            migrationBuilder.DropTable(
+                name: "TeacherTimetable");
 
             migrationBuilder.DropTable(
                 name: "TimetableCourses");
@@ -488,10 +597,10 @@ namespace TimeasyAPI.Migrations
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "Interval");
+                name: "Room");
 
             migrationBuilder.DropTable(
-                name: "Room");
+                name: "FPA");
 
             migrationBuilder.DropTable(
                 name: "Course");
@@ -500,16 +609,13 @@ namespace TimeasyAPI.Migrations
                 name: "Subject");
 
             migrationBuilder.DropTable(
-                name: "FPA");
-
-            migrationBuilder.DropTable(
-                name: "RoomType");
-
-            migrationBuilder.DropTable(
                 name: "Teacher");
 
             migrationBuilder.DropTable(
                 name: "Timetable");
+
+            migrationBuilder.DropTable(
+                name: "RoomType");
 
             migrationBuilder.DropTable(
                 name: "Institute");

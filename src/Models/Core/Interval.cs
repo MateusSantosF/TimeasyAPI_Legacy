@@ -9,8 +9,9 @@ namespace TimeasyAPI.src.Models
 
         // EF Relations
 
-        public Guid InstituteId { get; set; }
+     
         public Institute Institute { get; set; }
-        public ICollection<FPA> FPAs { get; set; }
+
+        public Guid InstituteId { get; set; }
     }
 }

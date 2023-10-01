@@ -7,7 +7,7 @@ using TimeasyAPI.src.Data;
 
 #nullable disable
 
-namespace TimeasyAPI.Migrations
+namespace TimeasyAPI.src.Data.Migrations
 {
     [DbContext(typeof(TimeasyDbContext))]
     partial class TimeasyDbContextModelSnapshot : ModelSnapshot
@@ -152,9 +152,6 @@ namespace TimeasyAPI.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<Guid?>("IntervalId")
-                        .HasColumnType("char(36)");
-
                     b.Property<uint>("Status")
                         .HasColumnType("int unsigned");
 
@@ -165,8 +162,6 @@ namespace TimeasyAPI.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IntervalId");
 
                     b.HasIndex("TeacherId");
 
@@ -508,7 +503,7 @@ namespace TimeasyAPI.Migrations
                     b.Property<int>("StudentsCount")
                         .HasColumnType("int");
 
-                    b.HasKey("SubjectId", "TimetableId");
+                    b.HasKey("SubjectId", "TimetableId", "CourseId");
 
                     b.HasIndex("CourseId");
 
@@ -582,10 +577,6 @@ namespace TimeasyAPI.Migrations
 
             modelBuilder.Entity("TimeasyAPI.src.Models.FPA", b =>
                 {
-                    b.HasOne("TimeasyAPI.src.Models.Interval", null)
-                        .WithMany("FPAs")
-                        .HasForeignKey("IntervalId");
-
                     b.HasOne("TimeasyAPI.src.Models.Teacher", "Teacher")
                         .WithMany("FPA")
                         .HasForeignKey("TeacherId")
@@ -771,11 +762,6 @@ namespace TimeasyAPI.Migrations
                     b.Navigation("Timetables");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("TimeasyAPI.src.Models.Interval", b =>
-                {
-                    b.Navigation("FPAs");
                 });
 
             modelBuilder.Entity("TimeasyAPI.src.Models.RoomType", b =>

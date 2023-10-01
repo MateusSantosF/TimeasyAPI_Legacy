@@ -65,11 +65,11 @@ namespace TimeasyAPI.src.Services
             }
         }
 
-        public async Task<InstituteDTO> GetById(string id)
+        public async Task<InstituteDTO> GetById(Guid instituteId)
         {
             try
             {
-                var instituteId = Guid.Parse(id);
+
                 var institute = await _instituteRepository.GetByIdWithIntervalsAsync(instituteId);
 
                 if (institute == null)

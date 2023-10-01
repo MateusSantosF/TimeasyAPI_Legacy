@@ -93,12 +93,12 @@ namespace TimeasyAPI.src.Services
             return pagedResultDTO;
         }
 
-        public async Task RemoveSubjectFromTimetable(Guid timetableId, Guid SubjectId)
+        public async Task RemoveSubjectFromTimetable(Guid timetableId, Guid subjectId, Guid courseId)
         {
 
             await CheckIfTimetableIsValidForChanges(timetableId);
 
-            var result = await _timetableRepository.GetTimetableSubjectByIdAsync(timetableId, SubjectId);
+            var result = await _timetableRepository.GetTimetableSubjectByIdAsync(timetableId, subjectId, courseId);
 
             if (result == null)
             {

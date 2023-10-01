@@ -13,7 +13,7 @@ namespace TimeasyAPI.src.DTOs.Course.CourseSubject
         public int WeeklyClassCount { get; set; }
 
         [Required]
-        [Range(1, 100, ErrorMessage = "WeeklyClassCount must be greater than 0.")]
+        [Range(1, 100, ErrorMessage = "Period must be greater than 0.")]
         public int Period { get; set; }
     }
 }

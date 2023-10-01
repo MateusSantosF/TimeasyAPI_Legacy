@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TimeasyAPI.src.DTOs.Institute.Request;
+using TimeasyAPI.src.Services;
 using TimeasyAPI.src.Services.Interfaces;
 
 namespace TimeasyAPI.Controllers
@@ -10,14 +11,16 @@ namespace TimeasyAPI.Controllers
     {
         private readonly IInstituteServices _instituteServices;
         private readonly IIntervalServices _intervalServices;
+        private readonly ITokenService _tokenService;
 
         /// <summary>
         ///  Construtor do controller
         /// </summary>
-        public InstituteController(IInstituteServices instituteServices, IIntervalServices intervalServices)
+        public InstituteController(IInstituteServices instituteServices, IIntervalServices intervalServices, ITokenService tokenService)
         {
             _instituteServices = instituteServices;
             _intervalServices = intervalServices;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -37,13 +40,14 @@ namespace TimeasyAPI.Controllers
         }
 
         /// <summary>
-        /// Retorna a instituição de ensino com base no Id
+        /// Retorna a instituição de ensino com base no usuario logado
         /// </summary>
-        /// <param name="instituteId">Id da instituição de ensino a ser buscada</param>
         [HttpGet]
-        public async Task<IActionResult> FindById(string instituteId)
+        public async Task<IActionResult> FindById()
         {
-            return Ok(await _instituteServices.GetById(instituteId));
+            var userInstituteId = _tokenService.GetInstituteIdByCurrentUser(User);
+
+            return Ok(await _instituteServices.GetById(userInstituteId));
         }
 
         /// <summary>

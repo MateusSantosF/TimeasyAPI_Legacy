@@ -7,7 +7,7 @@ namespace TimeasyAPI.src.Services.Interfaces
     {
         public Task UpdateAsync(UpdateInstituteRequest request);
 
-        public Task<InstituteDTO> GetById(string id);
+        public Task<InstituteDTO> GetById(Guid id);
 
     }
 }

@@ -8,31 +8,10 @@ namespace TimeasyAPI.src.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Institute> builder)
         {
-
-            builder
-                .HasMany(i => i.Courses)
-                .WithOne(c => c.Institute)
-                .HasForeignKey(c => c.InstituteId);
-
-            builder
-               .HasMany(i => i.Users)
-               .WithOne(u => u.Institute)
-               .IsRequired()
-               .HasForeignKey(c => c.InstituteId);
-
             builder.HasMany(i => i.Intervals)
                 .WithOne(i => i.Institute)
-                .HasForeignKey(i => i.InstituteId);
-
-            builder
-              .HasMany(i => i.Teachers)
-              .WithOne(t => t.Institute)
-              .HasForeignKey(c => c.InstituteId);
-
-            builder
-              .HasMany(i => i.Timetables)
-              .WithOne(t => t.Institute)
-              .HasForeignKey(c => c.InstituteId);
+                .HasForeignKey(i => i.InstituteId); 
+          
         }
     }
 }

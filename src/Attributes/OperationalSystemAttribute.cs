@@ -6,7 +6,7 @@ namespace TimeasyAPI.src.Validators
     public class OperationalSystemAttribute : ValidationAttribute
     {
 
-        public override bool IsValid(object value)
+        public override bool IsValid(object? value)
         {
 
             if(value is null)

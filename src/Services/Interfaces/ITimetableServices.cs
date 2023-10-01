@@ -16,7 +16,7 @@ namespace TimeasyAPI.src.Services.Interfaces
         Task RemoveByIdAsync(Guid id);
         Task<TimetableDTO> CreateAsync(CreateTimetableRequest request, Guid instituteId);
         Task UpdateAsync(UpdateTeacherRequest request);
-        Task RemoveSubjectFromTimetable(Guid timetableId, Guid subjectId);
+        Task RemoveSubjectFromTimetable(Guid timetableId, Guid subjectId, Guid courseId);
         Task RemoveCourseFromTimetable(Guid timetableId, Guid courseId);
         Task<List<RoomDTO>> GetTimetableRooms(Guid timetableId);
         Task<List<SubjectDTO>> GetTimetableSubjects(Guid timetableId);
