@@ -8,8 +8,6 @@ namespace TimeasyAPI.src.Models
         public string End { get; set; }
 
         // EF Relations
-
-     
         public Institute Institute { get; set; }
 
         public Guid InstituteId { get; set; }
