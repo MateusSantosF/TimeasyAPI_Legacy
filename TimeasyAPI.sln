@@ -5,7 +5,10 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeasyAPI", "TimeasyAPI.csproj", "{98A193CD-C678-4077-87B9-57E0C1E699A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeasyCore", "..\TimeasyCore\TimeasyCore.csproj", "{4009B92D-3F7C-4B15-9940-E7C92AB93A31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeasyCore", "TimeasyCore\TimeasyCore.csproj", "{CB588488-4CCB-4B9D-AF6C-B28D04C61DA7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{98A193CD-C678-4077-87B9-57E0C1E699A6} = {98A193CD-C678-4077-87B9-57E0C1E699A6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +20,10 @@ Global
 		{98A193CD-C678-4077-87B9-57E0C1E699A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98A193CD-C678-4077-87B9-57E0C1E699A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98A193CD-C678-4077-87B9-57E0C1E699A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4009B92D-3F7C-4B15-9940-E7C92AB93A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4009B92D-3F7C-4B15-9940-E7C92AB93A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4009B92D-3F7C-4B15-9940-E7C92AB93A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4009B92D-3F7C-4B15-9940-E7C92AB93A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB588488-4CCB-4B9D-AF6C-B28D04C61DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB588488-4CCB-4B9D-AF6C-B28D04C61DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB588488-4CCB-4B9D-AF6C-B28D04C61DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB588488-4CCB-4B9D-AF6C-B28D04C61DA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,10 @@
+﻿
+Tipos de conflitos que devo verificar:
+
+Se uma aula de um mesmo curso está em dias diferentes (DifferentDays)
+Se uma aula de qualquer curso, está em horario diferente (DifferentTime)
+Se uma aula de qualquer curso, está em salas diferentes (DifferentRoom)
+Se uma aula fere o horário de funcionamento da escola (InstituteWorkTime)
+Se uma sala tem capacidade para o número de alunos da disciplina (RoomCapacity)
+Se uma aula está escalonada em um horário válido para algum dos possíveis professores para essa disciplina (TeacherWorkTime)
+
