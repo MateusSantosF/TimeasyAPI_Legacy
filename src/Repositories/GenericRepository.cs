@@ -72,12 +72,17 @@ namespace TimeasyAPI.src.Repositories
             return await query.GetPagedAsync(page, pageSize);
         }
 
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<List<T>> GetAllAsync()
+        {
+            return await _entitie.Where(e => e.Active == true).ToListAsync();
+        }
+
+        public async Task<T?> GetByIdAsync(Guid id)
         {
             return await _entitie.AsNoTracking().Where(entitie => entitie.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
+        public async Task<T?> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await _entitie.AsNoTracking().Where(predicate).FirstOrDefaultAsync();
         }

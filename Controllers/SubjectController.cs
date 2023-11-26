@@ -54,11 +54,12 @@ namespace TimeasyAPI.Controllers
         /// </summary>
         /// <param name="page">Número da página</param>
         /// <param name="pageSize">Número de items por página</param>
+        /// <param name="name">Nome da Disciplina</param>
         /// <returns>teste</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllPaged(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllPaged(int page = 1, int pageSize = 10, string? name = null)
         {
-            return Ok(await _subjectService.GetAllAsync(page, pageSize));
+            return Ok(await _subjectService.GetAllAsync(page, pageSize, name));
         }
 
         /// <summary>

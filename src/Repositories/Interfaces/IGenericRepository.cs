@@ -9,6 +9,8 @@ namespace TimeasyAPI.src.Repositories.Interfaces
 
         public Task<PagedResult<T>> GetAllAsync(int page, int pageSize);
 
+        public  Task<List<T>> GetAllAsync();
+
         public Task<T> CreateAsync(T entity);
 
         public void Update(T entity);
@@ -19,9 +21,9 @@ namespace TimeasyAPI.src.Repositories.Interfaces
 
         public void Attach(IEnumerable<T> entities);
 
-        public Task<T> GetByIdAsync(Guid id);
+        public Task<T?> GetByIdAsync(Guid id);
 
-        public Task<T> FindAsync(Expression<Func<T, bool>> predicate);
+        public Task<T?> FindAsync(Expression<Func<T, bool>> predicate);
 
 
     }

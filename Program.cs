@@ -88,13 +88,12 @@ builder.Services.AddDbContext<TimeasyDbContext>(options =>
 // Configure Serilog
 builder.Host.UseSerilog((ctx, lc) => lc
     .WriteTo.File("log.txt",
-        LogEventLevel.Warning,
+        LogEventLevel.Error,
         rollingInterval: RollingInterval.Day)
 );
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -105,14 +104,13 @@ app.UseCors(x =>
 {
     x.AllowAnyOrigin();
     x.AllowAnyMethod();
-    x.AllowAnyHeader().WithHeaders("Content-Type");
+    x.AllowAnyHeader();
 });
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

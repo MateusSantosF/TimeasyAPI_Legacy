@@ -49,6 +49,17 @@ namespace TimeasyAPI.Controllers
         }
 
         /// <summary>
+        /// Retorna todos os tipos de sala
+        /// </summary>
+        /// <returns>Uma lista de tipo de salas</returns>
+        [HttpGet("all")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            return Ok(await _roomTypeService.GetAllAsync());
+        }
+
+        /// <summary>
         /// Atualiza o tipo de sala informado
         /// </summary>
         /// <param name="request">Propriedades a serem atualizadas do tipo da sala</param>

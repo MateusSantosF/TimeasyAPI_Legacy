@@ -121,6 +121,16 @@ namespace TimeasyAPI.src.Services
             return pagedResultDTO;
         }
 
+        public async Task<List<RoomTypeDTO>> GetAllAsync()
+        {
+            var result =  await _roomTypeRepository.GetAllAsync();
+
+            return result.Select(roomtype =>
+            {
+                return roomtype.EntitieToMap();
+            }).ToList();
+        }
+
         public async Task UpdateAsync(UpdateRoomTypeRequest request)
         {
 

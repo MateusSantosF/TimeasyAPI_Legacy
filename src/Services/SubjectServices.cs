@@ -1,4 +1,5 @@
-﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
+﻿using System.Linq.Expressions;
+using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Subject;
 using TimeasyAPI.src.DTOs.Subject.Requests;
 using TimeasyAPI.src.Helpers;
@@ -78,11 +79,23 @@ namespace TimeasyAPI.src.Services
             }
         }
 
-        public async Task<PagedResult<SubjectDTO>> GetAllAsync(int page, int pageSize)
+        public async Task<PagedResult<SubjectDTO>> GetAllAsync(int page, int pageSize, string? name = null)
         {
-            var result = await _subjectRepository.GetAllWithRoomTypeAsync(page, pageSize);
+            PagedResult<Subject> result;
 
-            var roomDTOs = result.Results.Select(room =>
+
+            if (name is null)
+            {
+                result = await _subjectRepository.GetAllWithRoomTypeAsync(page, pageSize);
+            }
+            else
+            {
+                Expression<Func<Subject, bool>> search = subject => subject.Name.Contains(name);
+                result = await _subjectRepository.GetAllWithRoomTypeAsync(page, pageSize, search);
+            }
+
+
+            var subjectDTO = result.Results.Select(room =>
             {
                 return room.EntitieToMap();
             }).ToList();
@@ -92,7 +105,7 @@ namespace TimeasyAPI.src.Services
                 CurrentPage = result.CurrentPage,
                 PageSize = result.PageSize,
                 RowCount = result.RowCount,
-                Results = roomDTOs
+                Results = subjectDTO
             };
 
             return pagedResultDTO;

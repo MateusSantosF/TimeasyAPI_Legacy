@@ -8,7 +8,7 @@ namespace TimeasyAPI.src.Services.Interfaces
     public interface ISubjectService
     {
 
-        Task<PagedResult<SubjectDTO>> GetAllAsync(int page, int pageSize);
+        Task<PagedResult<SubjectDTO>> GetAllAsync(int page, int pageSize, string? name = null);
         Task UpdateAsync(UpdateSubjectRequest request);
         Task DeleteByIdAsync(Guid id);
 

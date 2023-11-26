@@ -1,4 +1,5 @@
-﻿using TimeasyAPI.src.Models;
+﻿using System.Linq.Expressions;
+using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 
 namespace TimeasyAPI.src.Repositories.Interfaces
@@ -10,5 +11,7 @@ namespace TimeasyAPI.src.Repositories.Interfaces
 
         Task<bool> CheckIfExistsAsync(List<Guid> subjectsId);
         Task<PagedResult<Subject>> GetAllWithRoomTypeAsync(int page, int pageSize);
+        Task<PagedResult<Subject>> GetAllWithRoomTypeAsync(int page, int pageSize, Expression<Func<Subject, bool>> search);
+
     }
 }

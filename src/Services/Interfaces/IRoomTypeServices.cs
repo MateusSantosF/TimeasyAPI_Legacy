@@ -7,6 +7,7 @@ namespace TimeasyAPI.src.Services.Interfaces
     {
 
         Task<PagedResult<RoomTypeDTO>> GetAllAsync(int page, int pageSize, string? name);
+        Task<List<RoomTypeDTO>> GetAllAsync();
         Task UpdateAsync(UpdateRoomTypeRequest request);
         Task DeleteAsync(Guid id);
         Task<RoomTypeDTO> CreateAsync(CreateRoomTypeRequest request);

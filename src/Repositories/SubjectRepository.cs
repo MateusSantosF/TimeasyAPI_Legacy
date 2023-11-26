@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TimeasyAPI.src.Data;
-using TimeasyAPI.src.DTOs.Subject;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
@@ -19,6 +19,15 @@ namespace TimeasyAPI.src.Repositories
             _logger = logger;
             DbContext = context;
             _entitie = context.Set<Subject>();
+        }
+
+        public async Task<PagedResult<Subject>> GetAllWithRoomTypeAsync(int page, int pageSize, Expression<Func<Subject, bool>> search)
+        {
+            return await _entitie.Include(s => s.RoomTypeNeeded)
+                                  .AsNoTracking()
+                                  .Where(s => s.Active == true)
+                                  .Where(search)
+                                  .GetPagedAsync(page, pageSize);
         }
 
         public async Task<PagedResult<Subject>> GetAllWithRoomTypeAsync(int page, int pageSize)
