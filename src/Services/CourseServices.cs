@@ -1,10 +1,13 @@
-﻿using TimeasyAPI.Controllers.Middlewares.Exceptions;
+﻿using System.Linq.Expressions;
+using TimeasyAPI.Controllers.Middlewares.Exceptions;
 using TimeasyAPI.src.DTOs.Course.Requests;
 using TimeasyAPI.src.DTOs.Courses;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Mappings;
+using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects;
+using TimeasyAPI.src.Models.ValueObjects.Enums;
 using TimeasyAPI.src.Repositories.Interfaces;
 using TimeasyAPI.src.Services.Interfaces;
 using TimeasyAPI.src.UnitOfWork;
@@ -56,9 +59,21 @@ namespace TimeasyAPI.src.Services
             return course.EntitieToMap();
         }
 
-        public async Task<PagedResult<CourseDTO>> GetAllAsync(int page, int pageSize)
+        public async Task<PagedResult<CourseDTO>> GetAllAsync(int page, int pageSize, string? name = null)
         {
-            var result =  await _courseRepository.GetAllWithSubjectsAsync(page, pageSize);
+            PagedResult<Course> result;
+
+            if (name is not null)
+            {
+                Expression<Func<Course, bool>> search = course => course.Name.Contains(name);
+
+                result = await _courseRepository.GetAllWithSubjectsAsync(page, pageSize, search);
+            }
+            else
+            {
+                result = await _courseRepository.GetAllWithSubjectsAsync(page, pageSize);
+
+            }
 
             var courseDTOs = result.Results.Select(room =>
             {
@@ -157,7 +172,7 @@ namespace TimeasyAPI.src.Services
         public async Task UpdateAsync(UpdateCourseRequest request)
         {
 
-            var result = await _courseRepository.GetByIdWithSubjectsAsync(request.CourseId);
+            var result = await _courseRepository.GetByIdWithSubjectsAsync(request.Id);
 
             if(result == null)
             {
@@ -169,14 +184,14 @@ namespace TimeasyAPI.src.Services
                 result.Name = request.Name;
             }
 
-            if (request.Turn.HasValue)
+            if (request.Turn != null)
             {
-                result.Turn = request.Turn.Value;
+                result.Turn = Enum.Parse<Turn>(request.Turn, true);
             }
 
-            if (request.Period.HasValue)
+            if (request.Period != null)
             {
-                result.Period = request.Period.Value;
+                result.Period = Enum.Parse<PeriodType>(request.Period, true);
             }
 
             if(request.PeriodAmount.HasValue){
@@ -194,15 +209,27 @@ namespace TimeasyAPI.src.Services
 
                 var subjectsIds = request.Subjects.Select(s => s.SubjectId).ToList();
                 var subjects = await _subjectRepository.GetAllById(subjectsIds);
-       
-                var updatedCourseSubjects = subjects.Select(sb =>
+                var idToSubjectMap = subjects.ToDictionary(sb => sb.Id);
+                var updatedCourseSubjects = new List<CourseSubject>();
+
+                foreach (var requestSubject in request.Subjects)
                 {
-                    return new CourseSubject
+                    if (idToSubjectMap.TryGetValue(requestSubject.SubjectId, out var matchingSubject))
                     {
-                        SubjectId = sb.Id,
-                        CourseId = result.Id
-                    };
-                }).ToList();
+                        updatedCourseSubjects.Add(new CourseSubject
+                        {
+                            SubjectId = matchingSubject.Id,
+                            CourseId = result.Id,
+                            Period = requestSubject.Period,
+                            WeeklyClassCount = requestSubject.WeeklyClassCount
+                        });
+                    }
+                    else
+                    {
+                        throw new DatabaseException();
+                    }
+            
+                }
 
                 result.CourseSubject.AddRange(updatedCourseSubjects);
             }

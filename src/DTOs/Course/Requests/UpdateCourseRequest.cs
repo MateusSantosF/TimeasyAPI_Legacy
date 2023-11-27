@@ -7,7 +7,7 @@ namespace TimeasyAPI.src.DTOs.Course.Requests
     public class UpdateCourseRequest
     {
         [Required]
-        public Guid CourseId { get; set; }
+        public Guid Id { get; set; }
 
         [MaxLength(100, ErrorMessage = "Name must be at most 100 characters.")]
         public string? Name { get; set; }
@@ -15,9 +15,9 @@ namespace TimeasyAPI.src.DTOs.Course.Requests
         [Range(1, int.MaxValue, ErrorMessage = "PeriodAmount must be greater than 0.")]
         public int? PeriodAmount { get; set; }
 
-        public Turn? Turn { get; set; }
+        public string? Turn { get; set; }
 
-        public PeriodType? Period { get; set; }
+        public string? Period { get; set; }
 
         public ICollection<CourseSubjectDTO>? Subjects { get; set; }
     }

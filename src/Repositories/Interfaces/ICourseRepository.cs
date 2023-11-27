@@ -1,4 +1,5 @@
-﻿using TimeasyAPI.src.Models;
+﻿using System.Linq.Expressions;
+using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.UI;
 using TimeasyAPI.src.Models.ValueObjects;
 
@@ -8,7 +9,9 @@ namespace TimeasyAPI.src.Repositories.Interfaces
     {
         Task<PagedResult<Course>> GetAllWithSubjectsAsync(int page, int pageSize);
 
-        Task<Course> GetByIdWithSubjectsAsync(Guid courseId);
+        Task<PagedResult<Course>> GetAllWithSubjectsAsync(int page, int pageSize, Expression<Func<Course, bool>> search);
+
+        Task<Course?> GetByIdWithSubjectsAsync(Guid courseId);
 
         Task<List<Course>> GetAllCoursesById(List<Guid> coursesIds);
 

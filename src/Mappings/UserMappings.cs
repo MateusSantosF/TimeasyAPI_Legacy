@@ -61,7 +61,8 @@ namespace TimeasyAPI.src.Mappings
             {
                 Id = user.Id,
                 Email = user.Email,
-                AcessLevel = (uint)user.AcessLevel
+                AcessLevel = (uint)user.AcessLevel,
+                Name = user.FullName,
             };
         }
     }

@@ -2,7 +2,7 @@
 {
     public enum PeriodType: uint
     {
-        Quarter,
+        Bimester,
         Trimester,
         Semester,
         Annual

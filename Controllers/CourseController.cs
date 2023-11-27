@@ -25,11 +25,13 @@ namespace TimeasyAPI.Controllers
         /// </summary>
         /// <param name="page">Número da página</param>
         /// <param name="pageSize">Número de items por página</param>
+        /// <param name="name">Nome do curso</param>
+
         /// <returns>Uma lista de cursos de forma paginada</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllPagedAsync(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllPagedAsync(int page = 1, int pageSize = 10, string? name = null)
         {
-            return Ok(await _courseService.GetAllAsync(page, pageSize));
+            return Ok(await _courseService.GetAllAsync(page, pageSize, name));
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace TimeasyAPI.Controllers
         /// </summary>
         /// <param name="request">Informações do curso a serem alteradas</param>
         [HttpPatch]
-        public async Task<IActionResult> CreateAsync([FromBody] UpdateCourseRequest request)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateCourseRequest request)
         {
             if (!ModelState.IsValid)
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TimeasyAPI.src.Data;
 using TimeasyAPI.src.Helpers;
 using TimeasyAPI.src.Models;
@@ -36,6 +37,17 @@ namespace TimeasyAPI.src.Repositories
                     .GetPagedAsync(page, pageSize);
         }
 
+        public async Task<PagedResult<Course>> GetAllWithSubjectsAsync(int page, int pageSize, Expression<Func<Course, bool>> search)
+        {
+            return await _entitie
+                    .Include(c => c.CourseSubject)
+                    .ThenInclude(cs => cs.Subject)
+                    .AsNoTracking()
+                    .Where(c => c.Active == true)
+                    .Where(search)
+                    .GetPagedAsync(page, pageSize);
+        }
+
 
         public async Task<List<Course>> GetAllCoursesById(List<Guid> coursesIds)
         {
@@ -49,7 +61,7 @@ namespace TimeasyAPI.src.Repositories
 
 
 
-        public async Task<Course> GetByIdWithSubjectsAsync(Guid courseId)
+        public async Task<Course?> GetByIdWithSubjectsAsync(Guid courseId)
         {
             return await _entitie
                   .Include(c => c.CourseSubject)

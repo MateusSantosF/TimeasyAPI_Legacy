@@ -1,4 +1,6 @@
-﻿namespace TimeasyAPI.src.Models.ValueObjects
+﻿using TimeasyAPI.src.Models.ValueObjects.Enums;
+
+namespace TimeasyAPI.src.Models.ValueObjects
 {
     public class CourseSubject
     {

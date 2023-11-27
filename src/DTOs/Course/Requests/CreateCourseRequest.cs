@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TimeasyAPI.src.DTOs.Course.CourseSubject;
-using TimeasyAPI.src.Models.ValueObjects.Enums;
 
 namespace TimeasyAPI.src.DTOs.Course.Requests
 {
@@ -14,10 +13,10 @@ namespace TimeasyAPI.src.DTOs.Course.Requests
         public int PeriodAmount { get; set; }
 
         [Required(ErrorMessage = "Turn is required.")]
-        public Turn Turn { get; set; }
+        public string Turn { get; set; }
 
         [Required(ErrorMessage = "Period is required.")]
-        public PeriodType Period { get; set; }
+        public string Period { get; set; }
 
         [Required(ErrorMessage = "Subjects is required.")]
         public ICollection<CourseSubjectDTO> Subjects { get; set; }

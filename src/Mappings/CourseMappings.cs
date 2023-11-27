@@ -3,6 +3,7 @@ using TimeasyAPI.src.DTOs.Course.Requests;
 using TimeasyAPI.src.DTOs.Courses;
 using TimeasyAPI.src.Models;
 using TimeasyAPI.src.Models.ValueObjects;
+using TimeasyAPI.src.Models.ValueObjects.Enums;
 
 namespace TimeasyAPI.src.Mappings
 {
@@ -14,8 +15,8 @@ namespace TimeasyAPI.src.Mappings
             var newCourse =  new Course
             {
                 Name = course.Name,
-                Period = course.Period,
-                Turn = course.Turn,
+                Period = Enum.Parse<PeriodType>(course.Period, true),
+                Turn = Enum.Parse<Turn>(course.Turn, true),
                 PeriodAmount = course.PeriodAmount,
             };
 
@@ -53,8 +54,8 @@ namespace TimeasyAPI.src.Mappings
             {
                 Id = course.Id,
                 Name = course.Name,
-                Period = course.Period,
-                Turn = course.Turn,
+                Period = course.Period.ToString(),
+                Turn = course.Turn.ToString(),
                 PeriodAmount = course.PeriodAmount,
                 Subjects = Subjects
             };
